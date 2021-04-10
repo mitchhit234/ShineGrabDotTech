@@ -62,8 +62,9 @@ var window = 0; // current action window size
 var currentTechWindow = 0;
 
 
-
 //Default Actions
+
+
 
 var shinegrabs= new Array(); // array of shinegrabs
 
@@ -211,3 +212,4 @@ for(frame=GAME_START;frame<GAME_END;frame++) {
 for(var i =0; i < shinegrabs.length; i++) {
   console.log(shinegrabs[i][0]+shinegrabs[i][1])
 }
+
