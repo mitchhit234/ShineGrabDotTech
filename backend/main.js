@@ -8,7 +8,7 @@ eval(fs.readFileSync('readActionState.js')+'');
 
 // Including Slippi API for reading .slp files
 const { default: SlippiGame } = require('@slippi/slippi-js');
-const game = new SlippiGame("testing/shinegrab.slp");
+const game = new SlippiGame("testing/techtest.slp");
 
 // Shine = 'Reflector Ground Loop' (fox only)
 // Jump Squat = 'KneeBend'
@@ -20,6 +20,9 @@ const JUMP_SQUAT = getActionStateID(foxIDs, 'KneeBend');
 const GRAB = getActionStateID(foxIDs, 'Catch');
 const NAIR = getActionStateID(foxIDs, 'AttackAirN');
 const JUMPF = getActionStateID(foxIDs, 'JumpF');
+const MISSED_TECH_UP = getActionStateID(foxIDs, 'DownBoundU');
+const MISSED_TECH_DOWN = getActionStateID(foxIDs, 'DownBoundD')
+const NEUTRAL_TECH = getActionStateID(foxIDs, 'Passive')
 
 
 // *lastFrame* gives the total number of frames in the
@@ -56,11 +59,16 @@ const conversions = stats.conversions;
 var port = 0;
 
 var window = 0; // current action window size
+var currentTechWindow = 0;
 
-// iterate through future frames until new action is found
+
+
+//Default Actions
+
 function setPort(portNum){
   port = portNum;
 }
+// iterate through future frames until new action is found
 function getNextFrameAction(frame) {
   var startAction = frames[frame].players[port]['post']['actionStateId']
   while(frames[frame].players[port]['post']['actionStateId'] == startAction) {
@@ -68,6 +76,43 @@ function getNextFrameAction(frame) {
   }
   return frame
 }
+function hitTech(startFrame){
+  var nextFrameAction = getNextFrameAction(startFrame)
+  currentTechWindow = nextFrameAction - startFrame;
+  const TECHWINDOW = 20;
+  var hitTech = false
+  var currentAction = frames[startFrame].players[port]['post']['actionStateId']
+  if(currentAction == NEUTRAL_TECH){
+    hitTech = true;
+  }
+  var frame
+
+  if(hitTech == true){
+    for(frame = (startFrame - (TECHWINDOW * 2)); frame< (startFrame + TECHWINDOW); frame++){
+      console.log(frames[88].players[port]['pre'])
+    }
+  }
+}
+function missedTech(startFrame){
+  var nextFrameAction = getNextFrameAction(startFrame)
+  currentTechWindow = nextFrameAction - startFrame;
+  const TECHWINDOW = 20;
+  var missedTech = false
+  var currentAction = frames[startFrame].players[port]['post']['actionStateId']
+
+  if(currentAction == MISSED_TECH_DOWN || currentAction == MISSED_TECH_UP){
+    missedTech = true;
+  }
+  var frame;
+  if( missedTech == true){
+    for(frame = (startFrame - (TECHWINDOW * 2)); frame< (startFrame + TECHWINDOW); frame++){
+      //console.log(frames[frame].players[port]['pre']['physicalLTrigger'] + " at frame: " + frame)
+      console.log(frames[88].players[port]['pre'])
+    }
+  }
+
+  }
+
 
 // shinejump function
 function shineJump(startFrame,isPerfect) {
@@ -130,10 +175,25 @@ function shineGrab(startFrame) {
       console.log("slow jump at " + MAFF)
   }
 }
+console.log(frames[88].players[port]['post']['actionStateId'])
+console.log(frames[268].players[port]['post']['actionStateId'])
+console.log(NEUTRAL_TECH + " neutral")
+
+//console.log(frames[88].players[port]['pre'])
 
 var frame;
 for(frame=GAME_START;frame<GAME_END;frame++) {
-  if(frames[frame].players[port]['post']['actionStateId'] == SHINE){
+  if(frames[frame].players[port]['post']['actionStateId'] == MISSED_TECH_DOWN || frames[frame].players[port]['post']['actionStateId'] == MISSED_TECH_UP){
+    //console.log(frame + " frame action state" + frames[frame].players[port]['post']['actionStateId'])
+    frame = frame + currentTechWindow
+    //missedTech(frame)
+  }
+  else if(frames[frame].players[port]['post']['actionstateId'] == NEUTRAL_TECH){
+    console.log(frame + " frame action state" + frames[frame].players[port]['post']['actionStateId'])
+    frame = frame + currentTechWindow
+    hitTech(frame)
+  }
+  else if(frames[frame].players[port]['post']['actionStateId'] == SHINE){
     // call shinegrab
     shineGrab(frame)
     frame = frame + window
