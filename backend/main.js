@@ -57,13 +57,16 @@ const combos = stats.combos;
 const conversions = stats.conversions;
 
 var port = 0;
-
 var window = 0; // current action window size
+
 var currentTechWindow = 0;
 
 
 
 //Default Actions
+
+var shinegrabs= new Array(); // array of shinegrabs
+
 
 function setPort(portNum){
   port = portNum;
@@ -167,12 +170,18 @@ function shineGrab(startFrame) {
   // 0 index idicates if shinegrab is successful
   if(isShineGrab[0]) {
     var MAFF = startFrame+123
-    if(isShineGrab[0,1] != false) 
-      console.log("SHINE GRAB POGGAR!!! at " + MAFF)
-    else if(isShineGrab[0,1] == false) 
-      console.log("nair'd at " + MAFF)
-      else if(isShineGrab[1,1] == false) 
-      console.log("slow jump at " + MAFF)
+    // good shine grab!
+    if(isShineGrab[0,1] != false) {
+      shinegrabs.push(["Successful shine grab attempt at frame ",MAFF]);
+    } 
+    // Slow jump
+    else if(isShineGrab[1,1] == false) {
+      shinegrabs.push(["Shine grab attempt was too late (nair'd) at frame ",MAFF]);
+    }
+    // Nair'd instead 
+    else if(isShineGrab[0,1] == false) {
+      shinegrabs.push(["Successful shine grab attempt, but late jump at frame ",MAFF]);
+    }
   }
 }
 console.log(frames[88].players[port]['post']['actionStateId'])
@@ -198,4 +207,7 @@ for(frame=GAME_START;frame<GAME_END;frame++) {
     shineGrab(frame)
     frame = frame + window
   }
+}
+for(var i =0; i < shinegrabs.length; i++) {
+  console.log(shinegrabs[i][0]+shinegrabs[i][1])
 }
