@@ -8,7 +8,7 @@ eval(fs.readFileSync('readActionState.js')+'');
 
 // Including Slippi API for reading .slp files
 const { default: SlippiGame } = require('@slippi/slippi-js');
-const game = new SlippiGame("testing/techtest.slp");
+const game = new SlippiGame("testing/wavedashTest.slp");
 
 // Shine = 'Reflector Ground Loop' (fox only)
 // Jump Squat = 'KneeBend'
@@ -20,6 +20,7 @@ const JUMP_SQUAT = getActionStateID(foxIDs, 'KneeBend');
 const GRAB = getActionStateID(foxIDs, 'Catch');
 const NAIR = getActionStateID(foxIDs, 'AttackAirN');
 const JUMPF = getActionStateID(foxIDs, 'JumpF');
+const JUMPB = getActionStateID(foxIDs, 'JumpB');
 
 //Techs
 const MISSED_TECH_UP = getActionStateID(foxIDs, 'DownBoundU');
@@ -27,6 +28,11 @@ const MISSED_TECH_DOWN = getActionStateID(foxIDs, 'DownBoundD')
 const NEUTRAL_TECH = getActionStateID(foxIDs, 'Passive')
 const FORWARD_TECH = getActionStateID(foxIDs, 'PassiveStandF')
 const BACK_TECH = getActionStateID(foxIDs, 'PassiveStandB')
+
+//Airdodges
+const AIRDODGE = getActionStateID(foxIDs, 'EscapeAir')
+const LANDINGFALLSPECIAL = getActionStateID(foxIDs, 'LandingFallSpecial')
+
 
 
 // *lastFrame* gives the total number of frames in the
@@ -62,7 +68,7 @@ const conversions = stats.conversions;
 
 var port = 0;
 var window = 0; // current action window size
-var techs = 0;
+var techOpportunities = 0;
 var hitTechs = 0;
 var currentTechWindow = 0;
 
@@ -75,9 +81,19 @@ function ShineGrab(frameStart, successful, isPerfectJump, isPerfectGrab) {
   this.isPerfectGrab = isPerfectGrab;
 }
 
+function Tech(frameStart, techCase) {
+  this.frameStart = frameStart;
+  this.techCase = techCase;
+}
 
-var shinegrabs= new Array(); // array of shinegrabs
+function Wavedash(frameStart, isGoodDash) {
+  this.frameStart = frameStart;
+  this.isGoodDash = isGoodDash;
+}
 
+var shinegrabs = new Array(); // array of shinegrabs
+var wavedashes = new Array(); 
+var techs = new Array(); 
 
 function setPort(portNum){
   port = portNum;
@@ -91,7 +107,33 @@ function getNextFrameAction(frame) {
   return frame
 }
 
-//Determines How Player Missed Tech
+function waveDashes(startFrame){
+  var nextFrameAction = getNextFrameAction(startFrame)
+  waveDashTiming = nextFrameAction - startFrame;
+  var badTiming = false 
+  var nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+  if(nextAction == AIRDODGE || nextAction == LANDINGFALLSPECIAL){
+    if(waveDashTiming > 4){
+      badTiming = true
+      // console.log("HAS BAD TIMING " + (nextFrameAction + 123))
+    }
+  }
+  else{
+    nextFrameAction = checkJumps(startFrame)
+    nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+    waveDashTiming = nextFrameAction - startFrame;
+    if(nextAction == AIRDODGE || nextAction == LANDINGFALLSPECIAL){
+      if(waveDashTiming > 4){
+        // console.log("HAS BAD TIMING " + (nextFrameAction + 123))
+        badTiming = true
+      }
+    }
+    wavedashes.push(new Wavedash(nextFrameAction+123, !badTiming))
+  }
+  return [badTiming, nextFrameAction]
+}
+
+//prints How Player Missed Tech
 function determineTechCase(techCase){
   if(techCase == -1){
     console.log("Pressed Tech too Early")
@@ -135,14 +177,24 @@ function missedTech(startFrame){
       }
     }
   }
-
-return [determineTechCase(techCase), techFrame]
+return [techFrame+123,techCase] // adjust for the slippi video
 
 }
 
+function checkJumps(startFrame){
+  var nextFrameAction = getNextFrameAction(startFrame)
+  var nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+
+  if(nextAction == JUMPF || nextAction == JUMPB) {
+    nextFrameAction = getNextFrameAction(nextFrameAction)
+    nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+  }
+  return nextFrameAction;
+}
+
 //Determine Missed Techs and Tech Percent Calcs
-function techCalculations(techs, hitTechs){
-  var missedTechs = techs - hitTechs;
+function techCalculations(techOpportunities, hitTechs){
+  var missedTechs = techOpportunities - hitTechs;
   //Add Tech Percent Calcs
 }
 
@@ -179,14 +231,12 @@ function jcGrab(startFrame) {
   }
   else {
     // If the next action is jump forward, skip it because we dont care
-    if(nextAction == JUMPF) {
-      nextFrameAction = getNextFrameAction(nextFrameAction)
-      nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+    nextFrameAction = checkJumps(startFrame)
+    nextAction = nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
       if(nextAction == NAIR) {
         isGrab = true // still counts as a grab attempt
         isPerfect = false
       }
-    }
   }
   return [isGrab, isPerfect]
 }
@@ -201,15 +251,15 @@ function shineGrab(startFrame) {
     var adjustedFrame = startFrame+123
     // good shine grab!
     if(isShineGrab[0,1] != false) {
-      shinegrabs.push(ShineGrab(adjustedFrame,true,true,true))
+      shinegrabs.push(new ShineGrab(adjustedFrame,true,true,true))
     } 
     // Slow jump
     else if(isShineGrab[1,1] == false) {
-      shinegrabs.push(ShineGrab(adjustedFrame,true,false,true))
+      shinegrabs.push(new ShineGrab(adjustedFrame,true,false,true))
     }
     // Nair'd instead 
     else if(isShineGrab[0,1] == false) {
-      shinegrabs.push(ShineGrab(adjustedFrame,true,false,false))
+      shinegrabs.push(new ShineGrab(adjustedFrame,true,false,false))
     }
   }
 }
@@ -218,13 +268,14 @@ function shineGrab(startFrame) {
 var frame = 0;
 for(frame=GAME_START;frame<GAME_END;frame++) {
   var actionStateId = frames[frame].players[port]['post']['actionStateId']
-  if(actionStateId == MISSED_TECH_DOWN ||actionStateId == MISSED_TECH_UP){
-    techs++
-    missedTech(frame)
+  if(actionStateId == MISSED_TECH_DOWN ||actionStateId == MISSED_TECH_UP) {
+    techOpportunities++
+    var missedTechTuple = missedTech(frame) // returns 0: frame 1: techCase
+    techs.push(new Tech(missedTechTuple[0],missedTechTuple[1]))
     frame = frame + currentTechWindow
   }
   else if(actionStateId == NEUTRAL_TECH || actionStateId == BACK_TECH || actionStateId == FORWARD_TECH){
-    techs++
+    techOpportunities++
     hitTechs++
     frame = frame + currentTechWindow
   }
@@ -233,8 +284,23 @@ for(frame=GAME_START;frame<GAME_END;frame++) {
     shineGrab(frame)
     frame = frame + window
   }
+  else if (actionStateId == JUMPF || actionStateId == JUMPB || actionStateId == JUMP_SQUAT){
+    waveDashes(frame)
+    frame = frame + waveDashTiming
+  }
 }
-for(var i =0; i < shinegrabs.length; i++) {
-  console.log(shinegrabs[i][0]+shinegrabs[i][1])
+if(shinegrabs != []) {
+  for(var i =0; i < shinegrabs.length; i++) {
+    console.log(shinegrabs[i])
+  }
 }
-
+if(techs != []){
+  for(var i =0; i < techs.length; i++) {
+    console.log(techs[i])
+  }
+}
+if(wavedashes != []) {
+  for(var i =0; i < wavedashes.length; i++) {
+    console.log(wavedashes[i])
+  } 
+}
