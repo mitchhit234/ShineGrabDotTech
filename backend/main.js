@@ -8,7 +8,7 @@ eval(fs.readFileSync('readActionState.js')+'');
 
 // Including Slippi API for reading .slp files
 const { default: SlippiGame } = require('@slippi/slippi-js');
-const game = new SlippiGame("testing/techtest.slp");
+const game = new SlippiGame("testing/test_game.slp");
 
 // Shine = 'Reflector Ground Loop' (fox only)
 // Jump Squat = 'KneeBend'
@@ -62,7 +62,7 @@ const conversions = stats.conversions;
 
 var port = 0;
 var window = 0; // current action window size
-var techs = 0;
+var techOpportunities = 0;
 var hitTechs = 0;
 var currentTechWindow = 0;
 
@@ -75,9 +75,14 @@ function ShineGrab(frameStart, successful, isPerfectJump, isPerfectGrab) {
   this.isPerfectGrab = isPerfectGrab;
 }
 
+function Tech(frameStart, techCase) {
+  this.frameStart = frameStart;
+  this.techCase = techCase;
+}
+
 
 var shinegrabs= new Array(); // array of shinegrabs
-
+var techs= new Array(); // array of shinegrabs
 
 function setPort(portNum){
   port = portNum;
@@ -91,7 +96,7 @@ function getNextFrameAction(frame) {
   return frame
 }
 
-//Determines How Player Missed Tech
+//prints How Player Missed Tech
 function determineTechCase(techCase){
   if(techCase == -1){
     console.log("Pressed Tech too Early")
@@ -135,14 +140,13 @@ function missedTech(startFrame){
       }
     }
   }
-
-return [determineTechCase(techCase), techFrame]
+return [techFrame+123,techCase] // adjust for the slippi video
 
 }
 
 //Determine Missed Techs and Tech Percent Calcs
-function techCalculations(techs, hitTechs){
-  var missedTechs = techs - hitTechs;
+function techCalculations(techOpportunities, hitTechs){
+  var missedTechs = techOpportunities - hitTechs;
   //Add Tech Percent Calcs
 }
 
@@ -201,15 +205,15 @@ function shineGrab(startFrame) {
     var adjustedFrame = startFrame+123
     // good shine grab!
     if(isShineGrab[0,1] != false) {
-      shinegrabs.push(ShineGrab(adjustedFrame,true,true,true))
+      shinegrabs.push(new ShineGrab(adjustedFrame,true,true,true))
     } 
     // Slow jump
     else if(isShineGrab[1,1] == false) {
-      shinegrabs.push(ShineGrab(adjustedFrame,true,false,true))
+      shinegrabs.push(new ShineGrab(adjustedFrame,true,false,true))
     }
     // Nair'd instead 
     else if(isShineGrab[0,1] == false) {
-      shinegrabs.push(ShineGrab(adjustedFrame,true,false,false))
+      shinegrabs.push(new ShineGrab(adjustedFrame,true,false,false))
     }
   }
 }
@@ -218,13 +222,14 @@ function shineGrab(startFrame) {
 var frame = 0;
 for(frame=GAME_START;frame<GAME_END;frame++) {
   var actionStateId = frames[frame].players[port]['post']['actionStateId']
-  if(actionStateId == MISSED_TECH_DOWN ||actionStateId == MISSED_TECH_UP){
-    techs++
-    missedTech(frame)
+  if(actionStateId == MISSED_TECH_DOWN ||actionStateId == MISSED_TECH_UP) {
+    techOpportunities++
+    var missedTechTuple = missedTech(frame) // returns 0: frame 1: techCase
+    techs.push(new Tech(missedTechTuple[0],missedTechTuple[1]))
     frame = frame + currentTechWindow
   }
   else if(actionStateId == NEUTRAL_TECH || actionStateId == BACK_TECH || actionStateId == FORWARD_TECH){
-    techs++
+    techOpportunities++
     hitTechs++
     frame = frame + currentTechWindow
   }
@@ -234,7 +239,12 @@ for(frame=GAME_START;frame<GAME_END;frame++) {
     frame = frame + window
   }
 }
-for(var i =0; i < shinegrabs.length; i++) {
-  console.log(shinegrabs[i][0]+shinegrabs[i][1])
+if(shinegrabs != []) {
+  for(var i =0; i < shinegrabs.length; i++) {
+    console.log(shinegrabs[i])
+}
+}
+for(var i =0; i < techs.length; i++) {
+  console.log(techs[i])
 }
 
