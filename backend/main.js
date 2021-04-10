@@ -68,7 +68,12 @@ var currentTechWindow = 0;
 
 
 //Default Actions
-
+function ShineGrab(frameStart, successful, isPerfectJump, isPerfectGrab) {
+  this.frameStart = frameStart;
+  this.successful = successful;
+  this.isPerfectJump = isPerfectJump;
+  this.isPerfectGrab = isPerfectGrab;
+}
 
 
 var shinegrabs= new Array(); // array of shinegrabs
@@ -193,18 +198,18 @@ function shineGrab(startFrame) {
   var isShineGrab = shineJump(startFrame, isPerfect) && jcGrab(startFrame+window)
   // 0 index idicates if shinegrab is successful
   if(isShineGrab[0]) {
-    var MAFF = startFrame+123
+    var adjustedFrame = startFrame+123
     // good shine grab!
     if(isShineGrab[0,1] != false) {
-      shinegrabs.push(["Successful shine grab attempt at frame ",MAFF]);
+      shinegrabs.push(ShineGrab(adjustedFrame,true,true,true))
     } 
     // Slow jump
     else if(isShineGrab[1,1] == false) {
-      shinegrabs.push(["Shine grab attempt was too late (nair'd) at frame ",MAFF]);
+      shinegrabs.push(ShineGrab(adjustedFrame,true,false,true))
     }
     // Nair'd instead 
     else if(isShineGrab[0,1] == false) {
-      shinegrabs.push(["Successful shine grab attempt, but late jump at frame ",MAFF]);
+      shinegrabs.push(ShineGrab(adjustedFrame,true,false,false))
     }
   }
 }
