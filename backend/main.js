@@ -118,10 +118,7 @@ function waveDashes(startFrame){
   if(nextAction == AIRDODGE || nextAction == LANDINGFALLSPECIAL){
     if(waveDashTiming > 4){
       badTiming = true
-      console.log("HAS BAD TIMING " + (nextFrameAction + 123))
-    }
-    else{
-      console.log("HAS GOOD TIMING " + (nextFrameAction + 123))
+      // console.log("HAS BAD TIMING " + (nextFrameAction + 123))
     }
   }
   else{
@@ -132,11 +129,8 @@ function waveDashes(startFrame){
     waveDashTiming = nextFrameAction - startFrame;
     if(nextAction == AIRDODGE || nextAction == LANDINGFALLSPECIAL){
       if(waveDashTiming > 4){
-        console.log("HAS BAD TIMING " + (nextFrameAction + 123))
+        // console.log("HAS BAD TIMING " + (nextFrameAction + 123))
         badTiming = true
-      }
-      else{
-        console.log("HAS GOOD TIMING " + (nextFrameAction + 123))
       }
     }
     wavedashes.push(new Wavedash(nextFrameAction+123, !badTiming))
@@ -311,9 +305,13 @@ if(shinegrabs != []) {
     console.log(shinegrabs[i])
   }
 }
-for(var i =0; i < techs.length; i++) {
-  console.log(techs[i])
+if(techs != []){
+  for(var i =0; i < techs.length; i++) {
+    console.log(techs[i])
+  }
 }
-for(var i =0; i < wavedashes.length; i++) {
-  console.log(wavedashes[i])
-} 
+if(wavedashes != []) {
+  for(var i =0; i < wavedashes.length; i++) {
+    console.log(wavedashes[i])
+  } 
+}
