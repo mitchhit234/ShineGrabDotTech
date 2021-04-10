@@ -34,3 +34,17 @@ function getStageName(stageID){
   stageDict = readCharacterActionState('stages')
   return stageDict[stageID];
 }
+
+function getCharacterName(characterID){
+  characterDict = readCharacterActionState('characters')
+  return characterDict[characterID]
+}
+
+// Input a string of a character name or stage name 
+// and output a form of the string that will match to 
+// file name syntax (all lowercase, replace spaces, etc.)
+function fileReadable(string) {
+  string = string.toLowerCase();
+  string = string.replace(/\s/g, '_');
+  return string;
+}
