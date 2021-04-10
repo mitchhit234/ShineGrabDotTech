@@ -86,9 +86,14 @@ function Tech(frameStart, techCase) {
   this.techCase = techCase;
 }
 
+function Wavedash(frameStart, isGoodDash) {
+  this.frameStart = frameStart;
+  this.isGoodDash = isGoodDash;
+}
 
-var shinegrabs= new Array(); // array of shinegrabs
-var techs= new Array(); // array of shinegrabs
+var shinegrabs = new Array(); // array of shinegrabs
+var wavedashes = new Array(); 
+var techs = new Array(); 
 
 function setPort(portNum){
   port = portNum;
@@ -134,8 +139,9 @@ function waveDashes(startFrame){
         console.log("HAS GOOD TIMING " + (nextFrameAction + 123))
       }
     }
+    wavedashes.push(new Wavedash(nextFrameAction+123, !badTiming))
   }
-  return [badTiming, nextActionFrame]
+  return [badTiming, nextFrameAction]
 }
 
 //prints How Player Missed Tech
@@ -303,9 +309,11 @@ for(frame=GAME_START;frame<GAME_END;frame++) {
 if(shinegrabs != []) {
   for(var i =0; i < shinegrabs.length; i++) {
     console.log(shinegrabs[i])
-}
+  }
 }
 for(var i =0; i < techs.length; i++) {
   console.log(techs[i])
 }
-  
+for(var i =0; i < wavedashes.length; i++) {
+  console.log(wavedashes[i])
+} 
