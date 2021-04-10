@@ -20,9 +20,13 @@ const JUMP_SQUAT = getActionStateID(foxIDs, 'KneeBend');
 const GRAB = getActionStateID(foxIDs, 'Catch');
 const NAIR = getActionStateID(foxIDs, 'AttackAirN');
 const JUMPF = getActionStateID(foxIDs, 'JumpF');
+
+//Techs
 const MISSED_TECH_UP = getActionStateID(foxIDs, 'DownBoundU');
 const MISSED_TECH_DOWN = getActionStateID(foxIDs, 'DownBoundD')
 const NEUTRAL_TECH = getActionStateID(foxIDs, 'Passive')
+const FORWARD_TECH = getActionStateID(foxIDs, 'PassiveStandF')
+const BACK_TECH = getActionStateID(foxIDs, 'PassiveStandB')
 
 
 // *lastFrame* gives the total number of frames in the
@@ -58,7 +62,8 @@ const conversions = stats.conversions;
 
 var port = 0;
 var window = 0; // current action window size
-
+var techs = 0;
+var hitTechs = 0;
 var currentTechWindow = 0;
 
 
@@ -79,29 +84,29 @@ function getNextFrameAction(frame) {
   }
   return frame
 }
-function hitTech(startFrame){
-  var nextFrameAction = getNextFrameAction(startFrame)
-  currentTechWindow = nextFrameAction - startFrame;
-  const TECHWINDOW = 20;
-  var hitTech = false
-  var currentAction = frames[startFrame].players[port]['post']['actionStateId']
-  if(currentAction == NEUTRAL_TECH){
-    hitTech = true;
-  }
-  var frame
 
-  if(hitTech == true){
-    for(frame = (startFrame - (TECHWINDOW * 2)); frame< (startFrame + TECHWINDOW); frame++){
-      console.log(frames[88].players[port]['pre'])
-    }
+//Determines How Player Missed Tech
+function determineTechCase(techCase){
+  if(techCase == -1){
+    console.log("Pressed Tech too Early")
+    return techCase;
+  }else if( techCase == 0){
+    console.log("Never Pressed Tech")
+    return techCase;
+  }else if (techCase == 1){
+    console.log("Pressed Tech Too Late")
   }
 }
+
 function missedTech(startFrame){
   var nextFrameAction = getNextFrameAction(startFrame)
   currentTechWindow = nextFrameAction - startFrame;
   const TECHWINDOW = 20;
+  var possibleTech = startFrame - TECHWINDOW;
   var missedTech = false
   var currentAction = frames[startFrame].players[port]['post']['actionStateId']
+  var techCase = 0;
+  var techFrame = 0;
 
   if(currentAction == MISSED_TECH_DOWN || currentAction == MISSED_TECH_UP){
     missedTech = true;
@@ -109,13 +114,31 @@ function missedTech(startFrame){
   var frame;
   if( missedTech == true){
     for(frame = (startFrame - (TECHWINDOW * 2)); frame< (startFrame + TECHWINDOW); frame++){
-      //console.log(frames[frame].players[port]['pre']['physicalLTrigger'] + " at frame: " + frame)
-      console.log(frames[88].players[port]['pre'])
+      if(frames[frame].players[port]['pre']['trigger'] == 1){
+        if(frame < possibleTech){
+          techCase = -1 // pressed tech too early, before base case 
+          techFrame = frame
+        }
+        else if(frame > startFrame){
+          techCase = 1 // pressed tech too late, after base case
+          techFrame = frame
+        }
+        else{
+          techFrame = frame
+        }
+      }
     }
   }
 
-  }
+return [determineTechCase(techCase), techFrame]
 
+}
+
+//Determine Missed Techs and Tech Percent Calcs
+function techCalculations(techs, hitTechs){
+  var missedTechs = techs - hitTechs;
+  //Add Tech Percent Calcs
+}
 
 // shinejump function
 function shineJump(startFrame,isPerfect) {
@@ -184,25 +207,22 @@ function shineGrab(startFrame) {
     }
   }
 }
-console.log(frames[88].players[port]['post']['actionStateId'])
-console.log(frames[268].players[port]['post']['actionStateId'])
-console.log(NEUTRAL_TECH + " neutral")
 
-//console.log(frames[88].players[port]['pre'])
 
-var frame;
+var frame = 0;
 for(frame=GAME_START;frame<GAME_END;frame++) {
-  if(frames[frame].players[port]['post']['actionStateId'] == MISSED_TECH_DOWN || frames[frame].players[port]['post']['actionStateId'] == MISSED_TECH_UP){
-    //console.log(frame + " frame action state" + frames[frame].players[port]['post']['actionStateId'])
+  var actionStateId = frames[frame].players[port]['post']['actionStateId']
+  if(actionStateId == MISSED_TECH_DOWN ||actionStateId == MISSED_TECH_UP){
+    techs++
+    missedTech(frame)
     frame = frame + currentTechWindow
-    //missedTech(frame)
   }
-  else if(frames[frame].players[port]['post']['actionstateId'] == NEUTRAL_TECH){
-    console.log(frame + " frame action state" + frames[frame].players[port]['post']['actionStateId'])
+  else if(actionStateId == NEUTRAL_TECH || actionStateId == BACK_TECH || actionStateId == FORWARD_TECH){
+    techs++
+    hitTechs++
     frame = frame + currentTechWindow
-    hitTech(frame)
   }
-  else if(frames[frame].players[port]['post']['actionStateId'] == SHINE){
+  else if(actionStateId == SHINE){
     // call shinegrab
     shineGrab(frame)
     frame = frame + window
