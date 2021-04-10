@@ -53,12 +53,17 @@ const combos = stats.combos;
 // openingType (neutral wins), 
 const conversions = stats.conversions;
 
+var port = 0;
+
 var window = 0; // current action window size
 
 // iterate through future frames until new action is found
+function setPort(portNum){
+  port = portNum;
+}
 function getNextFrameAction(frame) {
-  var startAction = frames[frame].players[0]['post']['actionStateId']
-  while(frames[frame].players[0]['post']['actionStateId'] == startAction) {
+  var startAction = frames[frame].players[port]['post']['actionStateId']
+  while(frames[frame].players[port]['post']['actionStateId'] == startAction) {
     frame++;
   }
   return frame
@@ -68,7 +73,7 @@ function getNextFrameAction(frame) {
 function shineJump(startFrame,isPerfect) {
   var isShineJump = false
   var nextFrameAction = getNextFrameAction(startFrame)
-  var nextAction = frames[nextFrameAction].players[0]['post']['actionStateId']
+  var nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
   window = nextFrameAction - startFrame // The number of frames to skip
   if(nextAction == JUMP_SQUAT) {
     isShineJump = true
@@ -86,7 +91,7 @@ function shineJump(startFrame,isPerfect) {
 function jcGrab(startFrame) {
   var isGrab = false
   var nextFrameAction = getNextFrameAction(startFrame)
-  var nextAction = frames[nextFrameAction].players[0]['post']['actionStateId']
+  var nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
   var grabWindow = nextFrameAction - startFrame // The number of frames to skip
   if(nextAction == GRAB) {
     isGrab = true
@@ -99,7 +104,7 @@ function jcGrab(startFrame) {
     // If the next action is jump forward, skip it because we dont care
     if(nextAction == JUMPF) {
       nextFrameAction = getNextFrameAction(nextFrameAction)
-      nextAction = frames[nextFrameAction].players[0]['post']['actionStateId']
+      nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
       if(nextAction == NAIR) {
         isGrab = true // still counts as a grab attempt
         isPerfect = false
@@ -128,7 +133,7 @@ function shineGrab(startFrame) {
 
 var frame;
 for(frame=GAME_START;frame<GAME_END;frame++) {
-  if(frames[frame].players[0]['post']['actionStateId'] == SHINE){
+  if(frames[frame].players[port]['post']['actionStateId'] == SHINE){
     // call shinegrab
     shineGrab(frame)
     frame = frame + window
