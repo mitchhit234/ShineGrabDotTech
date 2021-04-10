@@ -27,3 +27,10 @@ function getActionStateID(stateIDs, action_name){
   const find = (element) => element == action_name; 
   return stateIDs.findIndex(find);
 }
+
+// Given a stageID from game settings.stageID, 
+// Return the name of the stage 
+function getStageName(stageID){
+  stageDict = readCharacterActionState('stages')
+  return stageDict[stageID];
+}
