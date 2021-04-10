@@ -1,38 +1,14 @@
 var fs = require('fs');
 
-// Divides our text files into arrays
-// Indexes seperated by newline
-function splitLines(t){
-  return t.split(/\r\n|\r|\n/);
-}
-
-// Input string of character name
-// Output array of state name to stateID array
-function readCharacterActionState(character_name){
-  try {
-    var data = fs.readFileSync(character_name+ '.txt', 'utf8');
-    var stateIDs = splitLines(data); 
-    return stateIDs;   
-  } catch(e) {
-    console.log('Error:', e.stack);
-  }
-}
-
-// Input a stateID array and action name
-// Returns the corresponding index that will be
-// what we see in the slippi data frame object
-// under 'actionStateID'
-function getActionStateID(stateIDs, action_name){
-  const find = (element) => element == action_name; 
-  return stateIDs.findIndex(find);
-}
+// Including functions for reading, parsing, and
+// searching for action states 
+eval(fs.readFileSync('readActionState.js')+'');
 
 // Shine = 'Reflector Ground Loop' (fox only)
 // Jump Squat = 'KneeBend'
 // Grab = 'Catch'
 // Check fox.txt for rest, up to 340 is universal
 foxIDs = readCharacterActionState('fox');
-
 const SHINE = getActionStateID(foxIDs, 'Reflector Ground Loop');
 const PRECUM = getActionStateID(foxIDs, 'KneeBend');
 const GRAB = getActionStateID(foxIDs, 'Catch');
