@@ -112,9 +112,6 @@ function waveDashes(startFrame){
   waveDashTiming = nextFrameAction - startFrame;
   var badTiming = false 
   var nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
-  var joystickAngle = frames[nextFrameAction].players[port]['pre']['joystickY']
-  //console.log(nextAction + "at frame: " + nextActionFrame)
-  //console.log(joystickAngle)
   if(nextAction == AIRDODGE || nextAction == LANDINGFALLSPECIAL){
     if(waveDashTiming > 4){
       badTiming = true
@@ -123,9 +120,7 @@ function waveDashes(startFrame){
   }
   else{
     nextFrameAction = checkJumps(startFrame)
-    //console.log(nextFrameAction + " inside frame")
     nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
-    //console.log(nextAction)
     waveDashTiming = nextFrameAction - startFrame;
     if(nextAction == AIRDODGE || nextAction == LANDINGFALLSPECIAL){
       if(waveDashTiming > 4){
@@ -193,7 +188,6 @@ function checkJumps(startFrame){
   if(nextAction == JUMPF || nextAction == JUMPB) {
     nextFrameAction = getNextFrameAction(nextFrameAction)
     nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
-    //console.log(nextFrameAction + " ; checkJumps Action")
   }
   return nextFrameAction;
 }
@@ -270,11 +264,7 @@ function shineGrab(startFrame) {
   }
 }
 
-console.log(frames[2].players[port]['post']['actionStateId'])
-console.log(frames[3].players[port]['post']['actionStateId'])
-console.log(frames[4].players[port]['post']['actionStateId'])
-console.log(frames[5].players[port]['post']['actionStateId'])
-console.log(GAME_END + " GAME END")
+
 var frame = 0;
 for(frame=GAME_START;frame<GAME_END;frame++) {
   var actionStateId = frames[frame].players[port]['post']['actionStateId']
@@ -295,7 +285,6 @@ for(frame=GAME_START;frame<GAME_END;frame++) {
     frame = frame + window
   }
   else if (actionStateId == JUMPF || actionStateId == JUMPB || actionStateId == JUMP_SQUAT){
-    //console.log("Enter wd")
     waveDashes(frame)
     frame = frame + waveDashTiming
   }
