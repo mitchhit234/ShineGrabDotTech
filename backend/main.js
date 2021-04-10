@@ -1,3 +1,5 @@
+// YO: SLIPPI REPLAY PARSER INDEXES AT 0 BUT SLIPPI.JS INDEXES AT -123
+
 var fs = require('fs');
 
 // Including functions for reading, parsing, and
@@ -6,7 +8,7 @@ eval(fs.readFileSync('readActionState.js')+'');
 
 // Including Slippi API for reading .slp files
 const { default: SlippiGame } = require('@slippi/slippi-js');
-const game = new SlippiGame("testing/zbutt.slp");
+const game = new SlippiGame("testing/shinegrab.slp");
 
 // Shine = 'Reflector Ground Loop' (fox only)
 // Jump Squat = 'KneeBend'
@@ -17,6 +19,7 @@ const SHINE = getActionStateID(foxIDs, 'Reflector Ground Loop');
 const JUMP_SQUAT = getActionStateID(foxIDs, 'KneeBend');
 const GRAB = getActionStateID(foxIDs, 'Catch');
 const NAIR = getActionStateID(foxIDs, 'AttackAirN');
+const JUMPF = getActionStateID(foxIDs, 'JumpF');
 
 
 // *lastFrame* gives the total number of frames in the
@@ -27,7 +30,7 @@ const GAME_END = meta_data.lastFrame;
 // This will contain most of our data for tech skill analysis
 // All slippi game files start on frame -123 (before GO leaves screen)
 const frames = game.getFrames()
-const GAME_START = 0
+const GAME_START = -123
 
 // *players[i]['characterid']* gives us the character ID
 // given by the last column in the google spreadsheet 
@@ -67,7 +70,6 @@ function shineJump(startFrame,isPerfect) {
   var nextFrameAction = getNextFrameAction(startFrame)
   var nextAction = frames[nextFrameAction].players[0]['post']['actionStateId']
   window = nextFrameAction - startFrame // The number of frames to skip
-  // console.log("shineJump Window:" + window)
   if(nextAction == JUMP_SQUAT) {
     isShineJump = true
     // acceptable window for a good shine grab
@@ -93,10 +95,16 @@ function jcGrab(startFrame) {
       isPerfect = true
     }
   }
-  else if(grabWindow > 2 && grabWindow < 10 && nextAction == NAIR){
-    console.log("GrabWIndow: " + grabWindow + " at frame: " + nextFrameAction);
-    isGrab = true
-    isPerfect = false
+  else {
+    // If the next action is jump forward, skip it because we dont care
+    if(nextAction == JUMPF) {
+      nextFrameAction = getNextFrameAction(nextFrameAction)
+      nextAction = frames[nextFrameAction].players[0]['post']['actionStateId']
+      if(nextAction == NAIR) {
+        isGrab = true // still counts as a grab attempt
+        isPerfect = false
+      }
+    }
   }
   return [isGrab, isPerfect]
 }
@@ -106,25 +114,23 @@ function shineGrab(startFrame) {
   isPerfect = false
   // call shinejump
   var isShineGrab = shineJump(startFrame, isPerfect) && jcGrab(startFrame+window)
-  console.log("shineJump: " + shineJump(startFrame, isPerfect))
-  console.log("jcGrab: " + jcGrab(startFrame+window))
-  //console.log(isShineGrab)
   // 0 index idicates if shinegrab is successful
   if(isShineGrab[0]) {
-    if(isShineGrab[0,1] != false)
-    //console.log("grabIsPerfect" + isShineGrab[0,1])
-      console.log("SHINE GRAB POGGAR!!!")
+    var MAFF = startFrame+123
+    if(isShineGrab[0,1] != false) 
+      console.log("SHINE GRAB POGGAR!!! at " + MAFF)
+    else if(isShineGrab[0,1] == false) 
+      console.log("nair'd at " + MAFF)
+      else if(isShineGrab[1,1] == false) 
+      console.log("slow jump at " + MAFF)
   }
 }
 
 var frame;
-console.log(frames[145].players[0]['post']['actionStateId'])
-console.log(GAME_END)
 for(frame=GAME_START;frame<GAME_END;frame++) {
   if(frames[frame].players[0]['post']['actionStateId'] == SHINE){
     // call shinegrab
     shineGrab(frame)
-    // console.log("frameWindow:"+window)
     frame = frame + window
   }
 }
