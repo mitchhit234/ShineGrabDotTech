@@ -49,6 +49,8 @@ const combos = stats.combos;
 // openingType (neutral wins), 
 const conversions = stats.conversions;
 
+var window = 0; // current action window size
+
 // iterate through future frames until new action is found
 function getNextFrameAction(frame) {
   var startAction = frames[frame].players[0]['post']['actionStateId']
@@ -63,6 +65,8 @@ function shineJump(startFrame,isPerfect) {
   var isShineJump = false
   var nextFrameAction = getNextFrameAction(startFrame)
   var nextAction = frames[nextFrameAction].players[0]['post']['actionStateId']
+  window = nextFrameAction - startFrame // The number of frames to skip
+  console.log(window)
   if(nextAction == JUMP_SQUAT) {
     isShineJump = true
     // acceptable window for a good shine grab
@@ -75,14 +79,36 @@ function shineJump(startFrame,isPerfect) {
       console.log("sucky shine jump")
     }
   }
+  return isShineJump
 }
 // jc grab function
+function jcGrab(startFrame) {
+  var isGrab = false
+  var nextFrameAction = getNextFrameAction(startFrame)
+  var nextAction = frames[nextFrameAction].players[0]['post']['actionStateId']
+  window = nextFrameAction - startFrame // The number of frames to skip
+  if(nextAction == GRAB) {
+    isGrab = true
+    // acceptable window for a good shine grab
+    if(nextFrameAction - startFrame <= 3) {
+      isPerfect = true
+      // console.log("perfect jc grab")
+    }
+    else {
+      isPerfect = false
+      // console.log("sucky jc grab")
+    }
+  }
+  return isGrab
+}
+
 // shine grab
 function shineGrab(startFrame) {
   isPerfect = false
   // call shinejump
-  return shineJump(startFrame, isPerfect)
-  /// call jc grab
+  var sj = shineJump(startFrame, isPerfect)
+  jcGrab(startFrame+window)
+
 }
 
 var frame;
@@ -90,6 +116,6 @@ for(frame=GAME_START;frame<GAME_END;frame++) {
   if(frames[frame].players[0]['post']['actionStateId'] == SHINE){
     // call shinegrab
     shineGrab(frame)
-    frame = frame + 4
+    frame = frame + window
   }
 }
