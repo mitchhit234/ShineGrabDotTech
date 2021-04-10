@@ -4,29 +4,29 @@ var fs = require('fs');
 // searching for action states 
 eval(fs.readFileSync('readActionState.js')+'');
 
+// Including Slippi API for reading .slp files
+const { default: SlippiGame } = require('@slippi/slippi-js');
+const game = new SlippiGame("testing/shinegrab.slp");
+
 // Shine = 'Reflector Ground Loop' (fox only)
 // Jump Squat = 'KneeBend'
 // Grab = 'Catch'
 // Check fox.txt for rest, up to 340 is universal
 foxIDs = readCharacterActionState('fox');
 const SHINE = getActionStateID(foxIDs, 'Reflector Ground Loop');
-const PRECUM = getActionStateID(foxIDs, 'KneeBend');
+const JUMP_SQUAT = getActionStateID(foxIDs, 'KneeBend');
 const GRAB = getActionStateID(foxIDs, 'Catch');
 
-const { default: SlippiGame } = require('@slippi/slippi-js');
-const game = new SlippiGame("./testing/shinegrab.slp");
-
-
-const frames = game.getFrames()
 
 // *lastFrame* gives the total number of frames in the
 // game (not including -123 to 0 before players can act)
 const meta_data = game.getMetadata();
+const GAME_END = meta_data.lastFrame;
 
-var i;
-var j;
-var k;
-
+// This will contain most of our data for tech skill analysis
+// All slippi game files start on frame -123 (before GO leaves screen)
+const frames = game.getFrames()
+const GAME_START = -123
 
 // *players[i]['characterid']* gives us the character ID
 // given by the last column in the google spreadsheet 
@@ -49,7 +49,11 @@ const combos = stats.combos;
 // openingType (neutral wins), 
 const conversions = stats.conversions;
 
-for(i=-123; i < meta_data['lastFrame']; i++) {
+var i;
+var j;
+var k;
+
+for(i=GAME_START; i < GAME_END; i++) {
   var is_shinegrab = false
   if(frames[i].players[0]['post']['actionStateId'] == SHINE){
     // console.log(i +", " + frames[i].players[0]['post']['actionStateId'])
@@ -58,7 +62,7 @@ for(i=-123; i < meta_data['lastFrame']; i++) {
       // check if action state is not shine
       if(frames[j].players[0]['post']['actionStateId'] != SHINE){
         var new_action = frames[j].players[0]['post']['actionStateId']
-        if(new_action == PRECUM) {
+        if(new_action == JUMP_SQUAT) {
           // check next three frames for grab
           for(k = j+1; k <= j+3; k++) {
             if(frames[k].players[0]['post']['actionStateId'] == GRAB) {

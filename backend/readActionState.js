@@ -10,7 +10,8 @@ function splitLines(t){
 // Output array of state name to stateID array
 function readCharacterActionState(character_name){
   try {
-    var data = fs.readFileSync(character_name+'.txt', 'utf8');
+    var fileName = 'assets/' + character_name + '.txt';
+    var data = fs.readFileSync(fileName, 'utf8');
     var stateIDs = splitLines(data); 
     return stateIDs;   
   } catch(e) {
