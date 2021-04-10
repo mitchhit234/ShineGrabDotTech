@@ -8,7 +8,7 @@ eval(fs.readFileSync('readActionState.js')+'');
 
 // Including Slippi API for reading .slp files
 const { default: SlippiGame } = require('@slippi/slippi-js');
-const game = new SlippiGame("testing/techtest.slp");
+const game = new SlippiGame("testing/wavedashTest.slp");
 
 // Shine = 'Reflector Ground Loop' (fox only)
 // Jump Squat = 'KneeBend'
@@ -20,6 +20,7 @@ const JUMP_SQUAT = getActionStateID(foxIDs, 'KneeBend');
 const GRAB = getActionStateID(foxIDs, 'Catch');
 const NAIR = getActionStateID(foxIDs, 'AttackAirN');
 const JUMPF = getActionStateID(foxIDs, 'JumpF');
+const JUMPB = getActionStateID(foxIDs, 'JumpB');
 
 //Techs
 const MISSED_TECH_UP = getActionStateID(foxIDs, 'DownBoundU');
@@ -27,6 +28,11 @@ const MISSED_TECH_DOWN = getActionStateID(foxIDs, 'DownBoundD')
 const NEUTRAL_TECH = getActionStateID(foxIDs, 'Passive')
 const FORWARD_TECH = getActionStateID(foxIDs, 'PassiveStandF')
 const BACK_TECH = getActionStateID(foxIDs, 'PassiveStandB')
+
+//Airdodges
+const AIRDODGE = getActionStateID(foxIDs, 'EscapeAir')
+const LANDINGFALLSPECIAL = getActionStateID(foxIDs, 'LandingFallSpecial')
+
 
 
 // *lastFrame* gives the total number of frames in the
@@ -91,6 +97,41 @@ function getNextFrameAction(frame) {
   return frame
 }
 
+function waveDashes(startFrame){
+  var nextFrameAction = getNextFrameAction(startFrame)
+  waveDashTiming = nextFrameAction - startFrame;
+  var badTiming = false 
+  var nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+  var joystickAngle = frames[nextFrameAction].players[port]['pre']['joystickY']
+  //console.log(nextAction + "at frame: " + nextActionFrame)
+  //console.log(joystickAngle)
+  if(nextAction == AIRDODGE || nextAction == LANDINGFALLSPECIAL){
+    if(waveDashTiming > 4){
+      badTiming = true
+      console.log("HAS BAD TIMING " + (nextFrameAction + 123))
+    }
+    else{
+      console.log("HAS GOOD TIMING " + (nextFrameAction + 123))
+    }
+  }
+  else{
+    nextFrameAction = checkJumps(startFrame)
+    //console.log(nextFrameAction + " inside frame")
+    nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+    //console.log(nextAction)
+    waveDashTiming = nextFrameAction - startFrame;
+    if(nextAction == AIRDODGE || nextAction == LANDINGFALLSPECIAL){
+      if(waveDashTiming > 4){
+        console.log("HAS BAD TIMING " + (nextFrameAction + 123))
+        badTiming = true
+      }
+      else{
+        console.log("HAS GOOD TIMING " + (nextFrameAction + 123))
+      }
+    }
+  }
+  return [badTiming, nextActionFrame]
+}
 //Determines How Player Missed Tech
 function determineTechCase(techCase){
   if(techCase == -1){
@@ -140,6 +181,18 @@ return [determineTechCase(techCase), techFrame]
 
 }
 
+function checkJumps(startFrame){
+  var nextFrameAction = getNextFrameAction(startFrame)
+  var nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+
+  if(nextAction == JUMPF || nextAction == JUMPB) {
+    nextFrameAction = getNextFrameAction(nextFrameAction)
+    nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+    //console.log(nextFrameAction + " ; checkJumps Action")
+  }
+  return nextFrameAction;
+}
+
 //Determine Missed Techs and Tech Percent Calcs
 function techCalculations(techs, hitTechs){
   var missedTechs = techs - hitTechs;
@@ -179,14 +232,12 @@ function jcGrab(startFrame) {
   }
   else {
     // If the next action is jump forward, skip it because we dont care
-    if(nextAction == JUMPF) {
-      nextFrameAction = getNextFrameAction(nextFrameAction)
-      nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+    nextFrameAction = checkJumps(startFrame)
+    nextAction = nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
       if(nextAction == NAIR) {
         isGrab = true // still counts as a grab attempt
         isPerfect = false
       }
-    }
   }
   return [isGrab, isPerfect]
 }
@@ -214,7 +265,11 @@ function shineGrab(startFrame) {
   }
 }
 
-
+console.log(frames[2].players[port]['post']['actionStateId'])
+console.log(frames[3].players[port]['post']['actionStateId'])
+console.log(frames[4].players[port]['post']['actionStateId'])
+console.log(frames[5].players[port]['post']['actionStateId'])
+console.log(GAME_END + " GAME END")
 var frame = 0;
 for(frame=GAME_START;frame<GAME_END;frame++) {
   var actionStateId = frames[frame].players[port]['post']['actionStateId']
@@ -233,8 +288,13 @@ for(frame=GAME_START;frame<GAME_END;frame++) {
     shineGrab(frame)
     frame = frame + window
   }
+  else if (actionStateId == JUMPF || actionStateId == JUMPB || actionStateId == JUMP_SQUAT){
+    //console.log("Enter wd")
+    waveDashes(frame)
+    frame = frame + waveDashTiming
+  }
 }
 for(var i =0; i < shinegrabs.length; i++) {
   console.log(shinegrabs[i][0]+shinegrabs[i][1])
 }
-
+  
