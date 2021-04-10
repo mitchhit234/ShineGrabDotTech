@@ -23,7 +23,7 @@
     	border-radius: 2em;
     }
 
-    .images2 {
+    .images2p {
       min-width: 20em;
     	border-style: solid;
     	border-color: #2137ff;
@@ -37,23 +37,27 @@
     	opacity: 75%;
     }
 
-    .images2:hover{
+    .images2p:hover{
     	border-color: #00c32a;
     	opacity: 75%;
     }
 
   </style>
 
-    <title>Hello, world!</title>
+  <script src=../backend/script.js"></script>
+
+  <div></div>
+
+
+    <title>Homepage</title>
   </head>
   <body>
     <div class ="d-flex align-items-center justify-content-center" style="height: 200px">
-    <h1>Pick Your Character</h1>
+    <h1>{{ name }}</h1>
     </div>
-
     <div class ="d-flex align-items-center justify-content-center" style="height: 450px">
     <img src="../backend/assets/character_img/fox.jpg" class="images">
-    <img src="../backend/assets/character_img/falco.jpg" class="images2">
+    <img src="../backend/assets/character_img/falco.jpg" class="images2p">
     </div>
 
     <!-- Optional JavaScript; choose one of the two! -->
