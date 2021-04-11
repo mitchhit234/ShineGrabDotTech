@@ -34,6 +34,17 @@
       .table th {
         text-align: center;
       } 
+
+      .float-left {
+        transform: rotate(45deg);
+      }
+
+      #container {height: 100%; width:100%; font-size: 0;}
+      #left, #middle, #right {display: inline-block; *display: inline; zoom: 1; vertical-align: top; font-size: 30px;}
+      #left {width: 25%; }
+      #middle {width: 50%; font-size: 50px;;}
+      #right {width: 25%;}
+
     </style>
 
     
@@ -173,11 +184,15 @@
 
 
 <div class="px-4 pt-5 my-5 text-center">
-  <h1 class="display-5 fw-bold">Misc.</h1>
+  <div id="container">
+    <div id="left">Tip 1</div>
+  <h1 id="middle" class="display-5 fw-bold">Miscellaneous</h1>
+  <div id="right">Tip 2</div>
+</div> 
+<p class="lead mb-4">A collection of other useful data</p>
   <div class="col-lg-6 mx-auto">
-    <p class="lead mb-4">A summary of your wavedash timings.</p>
-    <h2 class="whitespace">Acceptable Wavedash Percentage: </h2>
-    <div class="d-grid gap-2  justify-content-sm-center mb-5">   
+    <div class="d-grid gap-2  justify-content-sm-center mb-5"> 
+
        <table class="table">
         <thead>
           <tr>
@@ -189,7 +204,7 @@
         </thead>
         <tbody>
           <tr>
-            <td><%= neutral %></td>
+            <td><%= neutral %>%</td>
             <td><%= wavedashnum %></td>
             <td><%= inputspm %></td>
             <td><%= damagepk %></td>
@@ -197,6 +212,7 @@
         </tbody>
     </div>
   </div>
+
   <div class="overflow-hidden" style="max-height: 30vh;">
     <div class="container px-5">
     </div>
