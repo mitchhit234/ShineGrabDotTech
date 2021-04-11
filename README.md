@@ -4,13 +4,7 @@
 
 ## Running ShineGrabDotTech
 
-Install Dependicies 
-* npm
-* nodejs
-* @slippi/slippi-js
-* express
-* cluster
-* ejs
+Dependencies listed in packages.json
 
 Execute web application by invoking 'node read.js' in the scope of the backend directory
 
