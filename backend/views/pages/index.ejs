@@ -87,10 +87,10 @@
         <tbody>
           <tr>
             <% wavedashes.forEach(function(wavedash) { %>
-              <td scope="row"><%= wavedash.frameStart %></th>
+              <td scope="row"><%= wavedash.frameStart %></td>
               <td ><%= wavedash.isGoodDash %></td>
+              </tr>
             <% }); %>         
-          </tr>
         </tbody>
       </table>
     </div>
@@ -120,10 +120,10 @@
         <tbody>
           <tr>
             <% techs.forEach(function(tech) { %>
-              <td scope="row"><%= tech.frameStart %></th>
+              <td scope="row"><%= tech.frameStart %></td>
               <td ><%= tech.techCase %></td>
+              </tr>
             <% }); %>            
-          </tr>
         </tbody>
       </table>
     </div>
@@ -153,12 +153,12 @@
         <tbody>
           <tr>
             <% shinegrabs.forEach(function(shinegrab) { %>
-              <td scope="row"><%= shinegrab.frameStart %></th>
+              <td scope="row"><%= shinegrab.frameStart %></td>
               <td ><% shinegrabs.successful %></td>
               <td ><% shinegrabs.isPerfectJump %></td>
               <td ><% shinegrabs.isPerfectGrab %></td>
+            </tr>
             <% }); %>          
-          </tr>
         </tbody>
       </table>
     </div>
