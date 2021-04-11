@@ -10,6 +10,61 @@ const { get } = require('https');
 eval(fs.readFileSync('readActionState.js')+'');
 
 
+//READING FUNCTIONALITY  
+let express = require("express"),
+ejs = require('ejs'),
+app = express(),
+path = require('path'),
+multer = require('multer');
+
+app.set('view engine', 'ejs'); // code to set the ejs for rendering template
+app.use('/views/', express.static('./views'));
+ 
+let storage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        callback(null, __dirname + "/views/uploads")
+    },
+    filename: function(req, file, callback) {
+        console.log(file)
+        callback(null, "temp.slp")
+    }
+   })
+ 
+   app.get('/', function(req, res) {
+    res.render('pages/read')
+   })
+ 
+  app.post('/', function(req, res) {
+    let upload = multer({
+        storage: storage,
+        fileFilter: function(req, file, callback) {
+            let ext = path.extname(file.originalname)
+            callback(null, true)
+        }
+    }).single('userFile');
+    upload(req, res, function(err) {
+
+      var name = 'frontend more like poop end';
+
+      const game = new SlippiGame("views/uploads/temp.slp");
+      const settings = game.getSettings();
+
+      var char1 = getCharacterNames(settings.players[0]['characterId']);
+      var char2 = getCharacterNames(settings.players[1]['characterId']);
+
+      res.render('pages/start', {
+          name: name,
+          char1: fileReadable(char1),
+          char2: fileReadable(char2)})
+        
+    })
+  })
+   let host_port = process.env.PORT || 3000
+   app.listen(host_port, function() {
+    console.log('Node.js listening on port ' + host_port);
+   })
+//END READING FUNCTIONALITY
+
 const game = new SlippiGame("views/uploads/temp.slp");
 
 // Shine = 'Reflector Ground Loop' (fox only)
@@ -275,8 +330,8 @@ function shineGrab(startFrame) {
     }
   }
 
-
-//Accessor Functions
+}
+//Accessor Function
 function getShineGrabs(){
   return shinegrabs
 }
