@@ -1,4 +1,4 @@
 # ShineGrabDotTech
 
-![](backend/views/images/shieldgrab_logo.png)
+![](backend/views/images/shinegrab_logo.png)
 
