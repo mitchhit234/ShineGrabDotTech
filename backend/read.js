@@ -44,18 +44,19 @@ let storage = multer.diskStorage({
       ret = ret.slice(-1);
 
       eval(fs.readFileSync('main.js')+'');
-
       setPort(ret);
 
       
       res.render('pages/index', {
         wavedashes: getWaveDashes(),
         techs: getTechs(),
-        shinegrabs: getShineGrabs()
+        shinegrabs: getShineGrabs(),
+        neutral: getNeutralWins(),
+        wavedashnum: getWaveDashNum(),
+        inputspm: getInputsPerMinute(),
+        damagepk: getDamagePerKO()
       });
 
-      //var shinegrabs = getShineGrabs();
-      //console.log(shinegrabs);
       count++;
     }
    })
