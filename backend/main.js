@@ -370,19 +370,19 @@ for(frame=GAME_START;frame<GAME_END;frame++) {
 }
 if(shinegrabs != []) {
   for(var i =0; i < shinegrabs.length; i++) {
-    console.log(shinegrabs[i])
+    //console.log(shinegrabs[i])
   }
 }
 if(techs != []){
   for(var i =0; i < techs.length; i++) {
-    console.log(techs[i])
+    //console.log(techs[i])
   }
 }
 if(wavedashes != []) {
   for(var i =0; i < wavedashes.length; i++) {
-    console.log(wavedashes[i])
+    //console.log(wavedashes[i])
   } 
 
-  console.log(waveDashCalculations(waveDashCount, goodWaveDashes) + "% of wavedashes are acceptable")
-  console.log(techCalculations(techOpportunities,hitTechs) + "% of techs hit")
-}}
+  //console.log(waveDashCalculations(waveDashCount, goodWaveDashes) + "% of wavedashes are acceptable")
+  //console.log(techCalculations(techOpportunities,hitTechs) + "% of techs hit")
+}
