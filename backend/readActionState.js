@@ -35,7 +35,7 @@ function getStageName(stageID){
   return stageDict[stageID];
 }
 
-function getCharacterName(characterID){
+function getCharacterNames(characterID){
   characterDict = readCharacterActionState('characters')
   return characterDict[characterID]
 }

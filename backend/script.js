@@ -48,33 +48,3 @@ const combos = stats.combos;
 // Basically combo list extended, with more information like 
 // openingType (neutral wins), 
 const conversions = stats.conversions;
-
-var i;
-var j;
-var k;
-
-for(i=GAME_START; i < GAME_END; i++) {
-  var is_shinegrab = false
-  if(frames[i].players[0]['post']['actionStateId'] == SHINE){
-    // console.log(i +", " + frames[i].players[0]['post']['actionStateId'])
-    // 21 frames after i is acceptable for a shine grab
-    for(j = i; j < i+21; j++) {
-      // check if action state is not shine
-      if(frames[j].players[0]['post']['actionStateId'] != SHINE){
-        var new_action = frames[j].players[0]['post']['actionStateId']
-        if(new_action == JUMP_SQUAT) {
-          // check next three frames for grab
-          for(k = j+1; k <= j+3; k++) {
-            if(frames[k].players[0]['post']['actionStateId'] == GRAB) {
-              is_shinegrab = true
-              i = i+4
-            }
-          }
-        }
-      }
-    }
-    if(is_shinegrab) {
-      console.log("Shine grab")
-    }
-  }
-}

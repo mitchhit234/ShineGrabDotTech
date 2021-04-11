@@ -1,14 +1,71 @@
 // YO: SLIPPI REPLAY PARSER INDEXES AT 0 BUT SLIPPI.JS INDEXES AT -123
 
 var fs = require('fs');
+const { settings } = require('cluster');
+const { default: SlippiGame } = require('@slippi/slippi-js');
+const { get } = require('https');
 
 // Including functions for reading, parsing, and
 // searching for action states 
 eval(fs.readFileSync('readActionState.js')+'');
 
-// Including Slippi API for reading .slp files
-const { default: SlippiGame } = require('@slippi/slippi-js');
-const game = new SlippiGame("testing/getfucked.slp");
+
+//READING FUNCTIONALITY  
+let express = require("express"),
+ejs = require('ejs'),
+app = express(),
+path = require('path'),
+multer = require('multer');
+
+app.set('view engine', 'ejs'); // code to set the ejs for rendering template
+app.use('/views/', express.static('./views'));
+ 
+let storage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        callback(null, __dirname + "/views/uploads")
+    },
+    filename: function(req, file, callback) {
+        console.log(file)
+        callback(null, "temp.slp")
+    }
+   })
+ 
+   app.get('/', function(req, res) {
+    res.render('pages/read')
+   })
+ 
+  app.post('/', function(req, res) {
+    let upload = multer({
+        storage: storage,
+        fileFilter: function(req, file, callback) {
+            let ext = path.extname(file.originalname)
+            callback(null, true)
+        }
+    }).single('userFile');
+    upload(req, res, function(err) {
+
+      var name = 'frontend more like poop end';
+
+      const game = new SlippiGame("views/uploads/temp.slp");
+      const settings = game.getSettings();
+
+      var char1 = getCharacterNames(settings.players[0]['characterId']);
+      var char2 = getCharacterNames(settings.players[1]['characterId']);
+
+      res.render('pages/start', {
+          name: name,
+          char1: fileReadable(char1),
+          char2: fileReadable(char2)})
+        
+    })
+  })
+   let host_port = process.env.PORT || 3000
+   app.listen(host_port, function() {
+    console.log('Node.js listening on port ' + host_port);
+   })
+//END READING FUNCTIONALITY
+
+const game = new SlippiGame("views/uploads/temp.slp");
 
 // Shine = 'Reflector Ground Loop' (fox only)
 // Jump Squat = 'KneeBend'
@@ -49,7 +106,7 @@ const GAME_START = -123
 // given by the last column in the google spreadsheet 
 // *players[i].controllerFix* returns UCF if ucf is active
 // *stageID* returns stage ID given by google spreadsheet
-const settings = game.getSettings();
+//const settings = game.getSettings();
 
 // Overall and Stocks have a lot of information that will be useful
 const stats = game.getStats();
