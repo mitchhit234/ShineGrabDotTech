@@ -3,7 +3,6 @@ const { settings } = require('cluster');
 const { default: SlippiGame } = require('@slippi/slippi-js');
 const { get } = require('https');
 const { setPriority } = require('os');
-const { getStageName } = require('@slippi/slippi-js/dist/melee/stages');
 
 // Including functions for reading, parsing, and
 // searching for action states 
@@ -16,6 +15,8 @@ ejs = require('ejs'),
 app = express(),
 path = require('path'),
 multer = require('multer');
+
+
 
 app.set('view engine', 'ejs'); // code to set the ejs for rendering template
 app.use('/views/', express.static('./views'));
@@ -46,9 +47,19 @@ let storage = multer.diskStorage({
 
       eval(fs.readFileSync('main.js')+'');
       setPort(ret);
+      
+      enemy = (port+1) % 2;
+      const game2 = new SlippiGame("views/uploads/temp.slp");
+      const sets = game2.getSettings();
+      enemy_ID = sets.players[enemy]['characterId'];
 
-      var stageID = settings.stageID;
 
+
+      var stageName = getStageName(sets.stageId);
+
+      console.log(getCharacterNames(enemy_ID))
+
+      console.log(fileReadable(stageName));
       
       res.render('pages/index', {
         wavedashes: getWaveDashes(),
@@ -58,9 +69,11 @@ let storage = multer.diskStorage({
         wavedashnum: getWaveDashNum(),
         inputspm: getInputsPerMinute(),
         damagepk: getDamagePerKO(),
-        stage: getStageName(stageID),
+        stage: stageName,
+        stage_file: fileReadable(stageName),
         wdpercentage: waveDashCalculations(),
-        techcalc: techCalculations()
+        techcalc: techCalculations(),
+        enemy_name: getCharacterNames(enemy_ID)
       });
 
       count++;

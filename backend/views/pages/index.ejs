@@ -65,14 +65,14 @@
 
 <div class="px-4 py-5 my-5 text-center">
   <div id="container">
-    <div id="left" class="display-2 fw-bold">Stage - Dreamland</div>
+    <div id="left" class="display-2 fw-bold">Stage - <%= stage %></div>
     <h1 id="middle" class="display-5 fw-bold">Basic Gameplay Stats</h1>
     <div class="display-2 fw-bold" id="right">Tip - Average % Damage Per KO</div>
   </div>
     <p class="lead mb-4">Here's a brief overview of your gameplay.</p>
     
     <div id="container">
-      <div id=left><img class="images" src="views/images/dreamland.png"/></div>
+      <div id=left><img class="images" src="views/images/<%= stage_file %>.jpg"/></div>
     <div id= "middle"> 
       <div class="d-grid gap-2  justify-content-sm-center mb-5">
       <table class="table">
@@ -132,7 +132,7 @@
       </table>
     </div>
   </div>
-  <div id="right" style="font-size: 23px; vertical-align:middle">Picture goes here </div>
+  <div id="right"><img src="views/images/examples/missedTechSolo.png"/> </div>
     </div>
 </div>
 
