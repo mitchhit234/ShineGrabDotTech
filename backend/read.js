@@ -73,6 +73,7 @@ let storage = multer.diskStorage({
         wdpercentage: waveDashCalculations(),
         techcalc: techCalculations(),
         enemy_name: enemy_name,
+        enemy_file_name: enemy_file_name,
         tips: getTips(enemy_file_name)
       });
 

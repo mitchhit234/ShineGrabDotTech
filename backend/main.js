@@ -5,6 +5,13 @@ const { settings } = require('cluster');
 const { default: SlippiGame } = require('@slippi/slippi-js');
 const { get } = require('https');
 
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+}
+
+
 // Including functions for reading, parsing, and
 // searching for action states 
 eval(fs.readFileSync('readActionState.js')+'');
@@ -383,8 +390,9 @@ function getDamagePerKO(){
       total_kos += 1
     }
   }
+  //ONLY USED TO NOT CAUSE ERRORS FOR GAME FILES BEFORE 2019
   if (total_percent == 0){
-    return 92
+    return getRandomInt(90,110)
   }
   else{
   return (total_percent/total_kos).toFixed(0);

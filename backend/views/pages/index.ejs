@@ -67,7 +67,7 @@
   <div id="container">
     <div id="left" class="display-2 fw-bold">Stage - <%= stage %></div>
     <h1 id="middle" class="display-5 fw-bold">Basic Gameplay Stats</h1>
-    <div class="display-2 fw-bold" id="right"></div>
+    <div class="display-2 fw-bold" id="right">Opponent - <%= enemy_name %></div>
   </div>
     <p class="lead mb-4">Here's a brief overview of your gameplay.</p>
     
@@ -93,7 +93,7 @@
       </table>
       </div>
     </div>
-    <div id="right" style="font-size: 23px; vertical-align:middle"><%= tips[0] %></div>
+    <div id=right><img class="images" src="views/images/<%= enemy_file_name %>.jpg"/></div>
   </div>
 </div>
 
@@ -147,7 +147,7 @@
     <p class="lead mb-4">A summary of your tech skill</p>
     <h2 class="whitespace">Your Tech Percentage: <%= techcalc %>% </h2>
     <div id="container">
-      <div id=left><img class="images" src="views/images/examples/missedTechSolo.png"/></div>
+      <div id=left><img class="images" src="views/images/examples/missedTech.png"/></div>
     <div id= "middle"> 
       <div class="d-grid gap-2  justify-content-sm-center mb-5">
        
