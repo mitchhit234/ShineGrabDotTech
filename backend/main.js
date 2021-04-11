@@ -198,13 +198,13 @@ function checkJumps(startFrame){
 }
 
 //Determine Missed Techs and Tech Percent Calcs
-function techCalculations(techOpportunities, hitTechs){
+function techCalculations(){
   var techPercent = (hitTechs/techOpportunities) * 100
   return techPercent.toFixed(0)
    //Add Tech Percent Calcs
 }
 
-function waveDashCalculations(waveDashCount, goodWaveDashes){
+function waveDashCalculations(){
   var percentageGood = (goodWaveDashes / waveDashCount) * 100
   return percentageGood.toFixed(0)
 }
