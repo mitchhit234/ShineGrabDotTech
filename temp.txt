@@ -1,7 +1,0 @@
--Check for 2 players, otherwise functionality not supported yet (settings.players.length==2)
--Pick character 0 or 1 (get character profiles) (
--You won or lost
--You played x color x character vs y color y character 
--Game played on x stage at x time (settings.stageId),(meta_data.startAt)
--The winner had x stocks and x percent at the end of the game
-

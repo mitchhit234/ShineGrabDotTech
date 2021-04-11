@@ -56,9 +56,6 @@ let storage = multer.diskStorage({
       enemy_file_name = fileReadable(enemy_name)
 
       var stageName = getStageName(sets.stageId);
-
-      console.log(getTips(enemy_file_name))
-
       
       res.render('pages/index', {
         wavedashes: getWaveDashes(),
