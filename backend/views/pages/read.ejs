@@ -2,12 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
+    <!-- Bootstrap CSS -->
+    <link href="views/bootstrap.min.css" rel="stylesheet">
+    <link href="views/style.css" rel="stylesheet">
     <title></title>
 </head>
-<body>
-    <form id="uploadForm" enctype="multipart/form-data" method="post">
-        <input type="file" name="userFile" />
-        <input type="submit" value="Upload File" name="submit">
-    </form>
+  <style>
+    h1 {
+      text-align: center;
+      font-size: 300%;
+    }
+  </style>
+
+    <title>Homepage</title>
+  </head>
+  <body>
+  <div class="px-4 py-5 my-5 text-center"></div>
+    <img class="d-block mx-auto mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+      <h1 class="display-5 fw-bold">ShineGrab.tech</h1>
+      <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4 text-center">Gaming</p>
+        <div class="d-grid gap-2 justify-content-sm-center">
+          <form id="uploadForm" enctype="multipart/form-data" method="post">
+            <input class="btn" type="file" name="userFile" />
+            <input type="submit" value="Upload File" name="submit">
+          </form>
+        </div>
+      </div>
 </body>
+<script src="views/bootstrap.bundle.min.js"></script>
 </html>
