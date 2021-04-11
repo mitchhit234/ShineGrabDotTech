@@ -52,7 +52,15 @@ let storage = multer.diskStorage({
       console.log(getNeutralWins());
       console.log(getWaveDashNum());
 
+<<<<<<< HEAD
       res.render('pages/index');
+=======
+      //var shinegrabs = getShineGrabs();
+      //console.log(shinegrabs);
+      res.render('pages/index', {
+        
+      });
+>>>>>>> a0f29eb899a927bcee3947d84e9a386a971eed11
       count++;
     }
    })
