@@ -361,6 +361,14 @@ function getInputsPerMinute(){
 }
 
 function getDamagePerKill(){
-  player=port;
-  return (stats['overall'][0]['totalDamage']/4).toFixed(0);
+  me=port;
+  enemy= (me+1) % 2;
+  total_percent = total_kos = 0
+  for(var i=0; i<stats.stocks.length;i++){
+    if(stats.stocks[i]['playerIndex'] == enemy){
+      total_percent += stats.stocks[i]['endPercent']
+      total_kos += 1
+    }
+  }
+  return (total_percent/total_kos).toFixed(0);
 }
