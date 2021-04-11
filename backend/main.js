@@ -50,7 +50,7 @@ const GAME_START = -123
 // given by the last column in the google spreadsheet 
 // *players[i].controllerFix* returns UCF if ucf is active
 // *stageID* returns stage ID given by google spreadsheet
-//const settings = game.getSettings();
+const settings = game.getSettings();
 
 // Overall and Stocks have a lot of information that will be useful
 const stats = game.getStats();

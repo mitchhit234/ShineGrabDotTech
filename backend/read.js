@@ -3,6 +3,7 @@ const { settings } = require('cluster');
 const { default: SlippiGame } = require('@slippi/slippi-js');
 const { get } = require('https');
 const { setPriority } = require('os');
+const { getStageName } = require('@slippi/slippi-js/dist/melee/stages');
 
 // Including functions for reading, parsing, and
 // searching for action states 
@@ -46,6 +47,8 @@ let storage = multer.diskStorage({
       eval(fs.readFileSync('main.js')+'');
       setPort(ret);
 
+      var stageID = settings.stageID;
+
       
       res.render('pages/index', {
         wavedashes: getWaveDashes(),
@@ -54,7 +57,8 @@ let storage = multer.diskStorage({
         neutral: getNeutralWins(),
         wavedashnum: getWaveDashNum(),
         inputspm: getInputsPerMinute(),
-        damagepk: getDamagePerKO()
+        damagepk: getDamagePerKO(),
+        stage: getStageName(stageID)
       });
 
       count++;
