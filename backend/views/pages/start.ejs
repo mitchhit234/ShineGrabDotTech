@@ -54,8 +54,16 @@
     <h1><%= name %></h1>
     </div>
     <div class ="d-flex align-items-center justify-content-center" style="height: 450px">
-    <img src= "views/images/<%= char1 %>.jpg" class="images">
-    <img src= "views/images/<%= char2 %>.jpg"class="images2p">
+
+
+    <form action="" method="GET">
+      <button name="foo" value="0"><img src="views/images/<%= char1 %>.jpg" class="images"/></button>
+    </form>
+
+    <form action="" method="GET">
+      <button name="foo" value="1"><img src="views/images/<%= char2 %>.jpg" class="images2p"/></button>
+    </form>
+    
     </div>
 
     <!-- Optional JavaScript; choose one of the two! -->
