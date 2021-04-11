@@ -50,7 +50,9 @@ let storage = multer.diskStorage({
 
       //var shinegrabs = getShineGrabs();
       //console.log(shinegrabs);
-      res.render('pages/index');
+      res.render('pages/index', {
+        
+      });
       count++;
     }
    })
