@@ -32,7 +32,6 @@
         }
       }
 
-
       .table tr {
         text-align: center;
         font-size: 20px;
@@ -44,16 +43,16 @@
       }
 
       .images {
-        max-width: 85%;
+        max-width: 90%;
         border-style: solid;
         border-color: #5a5a5a;
         border-radius: 2em;
       }
 
       #container {height: 100%; width:100%; font-size: 0;}
-      #left, #middle, #right {display: inline-block; *display: inline; zoom: 1; vertical-align: top; font-size: 20px;}
+      #left, #middle, #right {display: inline-block; *display: inline; zoom: 1; vertical-align: center; font-size: 30px;}
       #left {width: 25%;}
-      #middle {width: 50%; font-size: 50px; padding-left: 25px; padding-right: 25px;}
+      #middle {width: 50%; font-size: 50px; padding-left: 10px; padding-right: 10px;}
       #right {width: 25%;}
 
     </style>
@@ -68,7 +67,7 @@
   <div id="container">
     <div id="left" class="display-2 fw-bold">Stage - Dreamland</div>
     <h1 id="middle" class="display-5 fw-bold">Basic Gameplay Stats</h1>
-    <div class="display-2 fw-bold" id="right">Tip</div>
+    <div class="display-2 fw-bold" id="right">Tip - Average % Damage Per KO</div>
   </div>
     <p class="lead mb-4">Here's a brief overview of your gameplay.</p>
     
@@ -94,19 +93,24 @@
       </table>
       </div>
     </div>
-    <div id="right">Falco has a poor recovery. Try and edge guard him and your damage per KO percentage will decrease </div>
+    <div id="right" style="font-size: 23px; vertical-align:middle">Falco has a poor recovery. Try and edge guard him and your damage per KO percentage will decrease </div>
   </div>
 </div>
 
 <div class="b-example-divider"></div>
 
 <div class="px-4 pt-5 my-5 text-center">
-  <h1 class="display-5 fw-bold">Wavedashes</h1>
-  <div class="col-lg-6 mx-auto">
+  <div id="container">
+    <div id="left" class="display-2 fw-bold">Tip - Something</div>
+    <h1 id="middle" class="display-5 fw-bold">Wavedashes</h1>
+    <div class="display-2 fw-bold" id="right"></div>
+    </div>
     <p class="lead mb-4 text-center">A summary of your wavedash timings.</p>
     <h2 class="whitespace">Acceptable Wavedash Percentage: </h2>
-    <div class="d-grid gap-2  justify-content-sm-center mb-5">
-       
+      <div id="container">
+        <div id=left>Tip goes here</div>
+        <div id= "middle">
+       <div class="d-grid gap-2  justify-content-sm-center mb-5">
        <table class="table">
         <thead>
           <tr>
@@ -127,20 +131,24 @@
       </table>
     </div>
   </div>
-  <div class="overflow-hidden" style="max-height: 30vh;">
-    <div class="container px-5">
+  <div id="right" style="font-size: 23px; vertical-align:middle">Picture goes here </div>
     </div>
-  </div>
 </div>
 
 <div class="b-example-divider"></div>
 
-<div class="px-4 pt-5 my-5 text-center">
-  <h1 class="display-5 fw-bold">Techs</h1>
-  <div class="col-lg-6 mx-auto">
-    <p class="lead mb-4">A summary of your tech skill.</p>
-    <h2 class="whitespace">Acceptable Tech Percentage: </h2>
-    <div class="d-grid gap-2  justify-content-sm-center mb-5">
+<div class="px-4 py-5 my-5 text-center">
+  <div id="container">
+    <div id="left" class="display-2 fw-bold">Stage - Dreamland</div>
+    <h1 id="middle" class="display-5 fw-bold">Techs</h1>
+    <div class="display-2 fw-bold" id="right">Tip - Average % Damage Per KO</div>
+  </div>
+    <p class="lead mb-4">A summary of your tech skill</p>
+    <h2 class="whitespace">Your Tech Percentage: </h2>
+    <div id="container">
+      <div id=left><img class="images" src="views/images/dreamland.png"/></div>
+    <div id= "middle"> 
+      <div class="d-grid gap-2  justify-content-sm-center mb-5">
        
        <table class="table">
         <thead>
@@ -166,19 +174,24 @@
       </table>
     </div>
   </div>
-  <div class="overflow-hidden" style="max-height: 30vh;">
-    <div class="container px-5">
+  <div id="right" style="font-size: 23px; vertical-align:middle">Picture goes here </div>
     </div>
-  </div>
-</div>
+ </div>
+ 
 
 <div class="b-example-divider"></div>
 
 <div class="px-4 pt-5 my-5 text-center">
-  <h1 class="display-5 fw-bold">Shine Grabs</h1>
-  <div class="col-lg-6 mx-auto">
-    <p class="lead mb-4">An analysis of your shine grab skill.</p>
-    <div class="d-grid  justify-content-sm-center mb-5">
+  <div id="container">
+    <div id="left" class="display-2 fw-bold">Tip - Something</div>
+    <h1 id="middle" class="display-5 fw-bold">Shine Grabs</h1>
+    <div class="display-2 fw-bold" id="right"></div>
+    </div>
+    <p class="lead mb-4 text-center">An analysis of your shine gra skill</p>
+      <div id="container">
+        <div id=left>Tip goes here</div>
+        <div id= "middle">
+       <div class="d-grid gap-2  justify-content-sm-center mb-5">
        
        <table class="table">
         <thead>
@@ -209,11 +222,10 @@
       </table>
     </div>
   </div>
-  <div class="overflow-hidden" style="max-height: 30vh;">
-    <div class="container px-5">
+  <div id="right" style="font-size: 23px; vertical-align:middle">Picture goes here </div>
     </div>
   </div>
-</div>
+
 
 <div class="b-example-divider"></div>
 
