@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.82.0">
-    <title>Heroes · Bootstrap v5.0</title>
+    <title>ShineGrabDotTech</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/heroes/">
 
@@ -67,7 +67,7 @@
   <div id="container">
     <div id="left" class="display-2 fw-bold">Stage - <%= stage %></div>
     <h1 id="middle" class="display-5 fw-bold">Basic Gameplay Stats</h1>
-    <div class="display-2 fw-bold" id="right">Tip - Average % Damage Per KO</div>
+    <div class="display-2 fw-bold" id="right"></div>
   </div>
     <p class="lead mb-4">Here's a brief overview of your gameplay.</p>
     
@@ -93,7 +93,7 @@
       </table>
       </div>
     </div>
-    <div id="right" style="font-size: 23px; vertical-align:middle">Falco has a poor recovery. Try and edge guard him and your damage per KO percentage will decrease </div>
+    <div id="right" style="font-size: 23px; vertical-align:middle"><%= tips[0] %></div>
   </div>
 </div>
 
@@ -101,14 +101,14 @@
 
 <div class="px-4 pt-5 my-5 text-center">
   <div id="container">
-    <div id="left" class="display-2 fw-bold">Tip - Something</div>
+    <div id="left" class="display-2 fw-bold"></div>
     <h1 id="middle" class="display-5 fw-bold">Wavedashes</h1>
     <div class="display-2 fw-bold" id="right"></div>
     </div>
     <p class="lead mb-4 text-center">A summary of your wavedash timings.</p>
     <h2 class="whitespace">Acceptable Wavedash Percentage: <%= wdpercentage %>%</h2>
       <div id="container">
-        <div id=left>Tip goes here</div>
+        <div id=left style="font-size: 23px; vertical-align:middle"><%= tips[1] %></div>
         <div id= "middle">
        <div class="d-grid gap-2  justify-content-sm-center mb-5">
 
@@ -142,7 +142,7 @@
   <div id="container">
     <div id="left" class="display-2 fw-bold"></div>
     <h1 id="middle" class="display-5 fw-bold">Techs</h1>
-    <div class="display-2 fw-bold" id="right">Tip - Average % Damage Per KO</div>
+    <div class="display-2 fw-bold" id="right"></div>
   </div>
     <p class="lead mb-4">A summary of your tech skill</p>
     <h2 class="whitespace">Your Tech Percentage: <%= techcalc %>% </h2>
@@ -175,7 +175,7 @@
       </table>
     </div>
   </div>
-  <div id="right" style="font-size: 23px; vertical-align:middle">Picture goes here </div>
+  <div id="right" style="font-size: 23px; vertical-align:middle"><%= tips[2] %> </div>
     </div>
  </div>
  
@@ -184,13 +184,13 @@
 
 <div class="px-4 pt-5 my-5 text-center">
   <div id="container">
-    <div id="left" class="display-2 fw-bold">Tip - Something</div>
+    <div id="left" class="display-2 fw-bold"></div>
     <h1 id="middle" class="display-5 fw-bold">Shine Grabs</h1>
     <div class="display-2 fw-bold" id="right"></div>
     </div>
     <p class="lead mb-4 text-center">An analysis of your shine gra skill</p>
       <div id="container">
-        <div id=left>Tip goes here</div>
+        <div id=left style="font-size: 23px; vertical-align:middle"><%= tips[3] %></div>
         <div id= "middle">
        <div class="d-grid gap-2  justify-content-sm-center mb-5">
        
@@ -231,35 +231,6 @@
 <div class="b-example-divider"></div>
 
 
-<div class="px-4 pt-5 my-5 text-center">
-  <div id="container">
-    <div id="left">Tip 1</div>
-  <h1 id="middle" class="display-5 fw-bold">Miscellaneous</h1>
-  <div id="right">Tip 2</div>
-</div> 
-<p class="lead mb-4">A collection of other useful data</p>
-  <div class="col-lg-6 mx-auto">
-    <div class="d-grid gap-2  justify-content-sm-center mb-5"> 
-
-       <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Percent of Neutral Wins</th>
-            <th scope="col">Total Wave Dashes</th>
-            <th scope="col">Inputs Per Minute</th>
-            <th scope="col">Average Damage Per Kill</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><%= neutral %>%</td>
-            <td><%= wavedashnum %></td>
-            <td><%= inputspm %></td>
-            <td><%= damagepk %></td>
-          </tr>
-        </tbody>
-    </div>
-  </div>
 
   <div class="overflow-hidden" style="max-height: 30vh;">
     <div class="container px-5">

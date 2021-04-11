@@ -76,6 +76,19 @@ var goodWaveDashes = 0
 var waveDashCount = 0
 
 
+//Read in Charatcer Tips
+function getTips(char) {
+  try {
+    var fileName = 'assets/' + char + '_tips.txt';
+    var data = fs.readFileSync(fileName, 'utf8');
+    var stateIDs = splitLines(data); 
+    return stateIDs;   
+  } catch(e) {
+    console.log('Error:', e.stack);
+  }
+}
+
+
 //Default Actions
 function ShineGrab(frameStart, successful, isPerfectJump, isPerfectGrab) {
   this.frameStart = frameStart;

@@ -52,14 +52,13 @@ let storage = multer.diskStorage({
       const game2 = new SlippiGame("views/uploads/temp.slp");
       const sets = game2.getSettings();
       enemy_ID = sets.players[enemy]['characterId'];
-
-
+      enemy_name = getCharacterNames(enemy_ID)
+      enemy_file_name = fileReadable(enemy_name)
 
       var stageName = getStageName(sets.stageId);
 
-      console.log(getCharacterNames(enemy_ID))
+      console.log(getTips(enemy_file_name))
 
-      console.log(fileReadable(stageName));
       
       res.render('pages/index', {
         wavedashes: getWaveDashes(),
@@ -73,7 +72,8 @@ let storage = multer.diskStorage({
         stage_file: fileReadable(stageName),
         wdpercentage: waveDashCalculations(),
         techcalc: techCalculations(),
-        enemy_name: getCharacterNames(enemy_ID)
+        enemy_name: enemy_name,
+        tips: getTips(enemy_file_name)
       });
 
       count++;
