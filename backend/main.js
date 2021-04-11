@@ -128,6 +128,8 @@ var window = 0; // current action window size
 var techOpportunities = 0;
 var hitTechs = 0;
 var currentTechWindow = 0;
+var goodWaveDashes = 0
+var waveDashCount = 0
 
 
 //Default Actions
@@ -187,6 +189,8 @@ function waveDashes(startFrame){
     }
     wavedashes.push(new Wavedash(nextFrameAction+123, !badTiming))
   }
+  if(badTiming!=true)
+    goodWaveDashes++
   return [badTiming, nextFrameAction]
 }
 
@@ -251,8 +255,14 @@ function checkJumps(startFrame){
 
 //Determine Missed Techs and Tech Percent Calcs
 function techCalculations(techOpportunities, hitTechs){
-  var missedTechs = techOpportunities - hitTechs;
-  //Add Tech Percent Calcs
+  var techPercent = (hitTechs/techOpportunities) * 100
+  return techPercent.toFixed(0)
+   //Add Tech Percent Calcs
+}
+
+function waveDashCalculations(waveDashCount, goodWaveDashes){
+  var percentageGood = (goodWaveDashes / waveDashCount) * 100
+  return percentageGood.toFixed(0)
 }
 
 // shinejump function
@@ -319,6 +329,17 @@ function shineGrab(startFrame) {
       shinegrabs.push(new ShineGrab(adjustedFrame,true,false,false))
     }
   }
+
+}
+//Accessor Function
+function getShineGrabs(){
+  return shinegrabs
+}
+function getWaveDashes(){
+  return wavedashes
+}
+function getTechs(){
+  return techs
 }
 
 
@@ -344,6 +365,7 @@ for(frame=GAME_START;frame<GAME_END;frame++) {
   else if (actionStateId == JUMPF || actionStateId == JUMPB || actionStateId == JUMP_SQUAT){
     waveDashes(frame)
     frame = frame + waveDashTiming
+    waveDashCount++
   }
 }
 if(shinegrabs != []) {
@@ -360,4 +382,7 @@ if(wavedashes != []) {
   for(var i =0; i < wavedashes.length; i++) {
     console.log(wavedashes[i])
   } 
-}
+
+  console.log(waveDashCalculations(waveDashCount, goodWaveDashes) + "% of wavedashes are acceptable")
+  console.log(techCalculations(techOpportunities,hitTechs) + "% of techs hit")
+}}
