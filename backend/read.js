@@ -44,13 +44,8 @@ let storage = multer.diskStorage({
       ret = ret.slice(-1);
 
       eval(fs.readFileSync('main.js')+'');
-
       setPort(ret);
 
-      var shinegrabs = getShineGrabs();
-      console.log(shinegrabs);
-      console.log(getNeutralWins());
-      console.log(getWaveDashNum());
       
       res.render('pages/index', {
         wavedashes: getWaveDashes(),
@@ -62,8 +57,6 @@ let storage = multer.diskStorage({
         damagepk: getDamagePerKO()
       });
 
-      //var shinegrabs = getShineGrabs();
-      //console.log(shinegrabs);
       count++;
     }
    })
