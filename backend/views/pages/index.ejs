@@ -104,7 +104,7 @@
   <h1 class="display-5 fw-bold">Wavedashes</h1>
   <div class="col-lg-6 mx-auto">
     <p class="lead mb-4 text-center">A summary of your wavedash timings.</p>
-    <h2 class="whitespace">Acceptable Wavedash Percentage: </h2>
+    <h2 class="whitespace">Acceptable Wavedash Percentage: <%= wdpercentage %></h2>
     <div class="d-grid gap-2  justify-content-sm-center mb-5">
        
        <table class="table">
@@ -118,7 +118,7 @@
           <tr>
             <% wavedashes.forEach(function(wavedash) { %>
               <% if (wavedash.isGoodDash == false) { %>
-                <td scope="row"><%= wavedash.frameStart %></td>
+                <td scope="row"><%= wavedash.frameStart %>%</td>
                 <td>Late</td>
               <% } %>
               </tr>
@@ -139,7 +139,7 @@
   <h1 class="display-5 fw-bold">Techs</h1>
   <div class="col-lg-6 mx-auto">
     <p class="lead mb-4">A summary of your tech skill.</p>
-    <h2 class="whitespace">Acceptable Tech Percentage: </h2>
+    <h2 class="whitespace">Acceptable Tech Percentage: <%= techcalc %>%</h2>
     <div class="d-grid gap-2  justify-content-sm-center mb-5">
        
        <table class="table">
