@@ -330,3 +330,37 @@ if(wavedashes != []) {
   //console.log(waveDashCalculations(waveDashCount, goodWaveDashes) + "% of wavedashes are acceptable")
   //console.log(techCalculations(techOpportunities,hitTechs) + "% of techs hit")
 }
+
+// Mitchell's Le Epic Functions
+
+function getNeutralWins(){
+  player = port;
+  mine = theirs = 0;
+  for(var i = 0; i < conversions.length; i++){
+    if(conversions[i]['openingType'] == 'neutral-win'){
+      if(conversions[i]['playerIndex'] == player){
+        mine++;
+      }
+      else
+      {
+        theirs++;
+      }
+    }
+  }
+  return (mine/(mine+theirs)).toFixed(2)*100;
+}
+
+function getWaveDashNum(){
+  player = port;
+  return stats.actionCounts[player]['wavedashCount'];
+}
+
+function getInputsPerMinute(){
+  player = port;
+  return stats['overall'][0]['inputsPerMinute']['ratio'].toFixed(0);
+}
+
+function damagePerKill(){
+  player=port;
+  return (stats['overall'][0]['totalDamage']/4).toFixed(0);
+}

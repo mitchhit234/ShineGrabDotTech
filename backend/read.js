@@ -45,11 +45,13 @@ let storage = multer.diskStorage({
 
       eval(fs.readFileSync('main.js')+'');
 
-      //setPort(ret);
-      //console.log(waveDashes(0));
+      setPort(ret);
 
-      //var shinegrabs = getShineGrabs();
-      //console.log(shinegrabs);
+      var shinegrabs = getShineGrabs();
+      console.log(shinegrabs);
+      console.log(getNeutralWins());
+      console.log(getWaveDashNum());
+
       res.render('pages/index');
       count++;
     }
