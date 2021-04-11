@@ -58,7 +58,9 @@ let storage = multer.diskStorage({
         wavedashnum: getWaveDashNum(),
         inputspm: getInputsPerMinute(),
         damagepk: getDamagePerKO(),
-        stage: getStageName(stageID)
+        stage: getStageName(stageID),
+        wdpercentage: waveDashCalculations(),
+        techcalc: techCalculations()
       });
 
       count++;

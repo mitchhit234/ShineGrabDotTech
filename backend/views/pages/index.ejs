@@ -106,11 +106,12 @@
     <div class="display-2 fw-bold" id="right"></div>
     </div>
     <p class="lead mb-4 text-center">A summary of your wavedash timings.</p>
-    <h2 class="whitespace">Acceptable Wavedash Percentage: </h2>
+    <h2 class="whitespace">Acceptable Wavedash Percentage: <%= wdpercentage %>%</h2>
       <div id="container">
         <div id=left>Tip goes here</div>
         <div id= "middle">
        <div class="d-grid gap-2  justify-content-sm-center mb-5">
+
        <table class="table">
         <thead>
           <tr>
@@ -122,7 +123,7 @@
           <tr>
             <% wavedashes.forEach(function(wavedash) { %>
               <% if (wavedash.isGoodDash == false) { %>
-                <td scope="row"><%= wavedash.frameStart %></td>
+                <td scope="row"><%= wavedash.frameStart %>%</td>
                 <td>Late</td>
               <% } %>
               </tr>
@@ -144,7 +145,7 @@
     <div class="display-2 fw-bold" id="right">Tip - Average % Damage Per KO</div>
   </div>
     <p class="lead mb-4">A summary of your tech skill</p>
-    <h2 class="whitespace">Your Tech Percentage: </h2>
+    <h2 class="whitespace">Your Tech Percentage: <%= techcalc %>% </h2>
     <div id="container">
       <div id=left><img class="images" src="views/images/dreamland.png"/></div>
     <div id= "middle"> 
