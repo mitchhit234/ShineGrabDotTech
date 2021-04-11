@@ -59,7 +59,7 @@ let storage = multer.diskStorage({
         neutral: getNeutralWins(),
         wavedashnum: getWaveDashNum(),
         inputspm: getInputsPerMinute(),
-        damagepk: getDamagePerKill()
+        damagepk: getDamagePerKO()
       });
 
       //var shinegrabs = getShineGrabs();

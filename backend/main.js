@@ -360,7 +360,7 @@ function getInputsPerMinute(){
   return stats['overall'][0]['inputsPerMinute']['ratio'].toFixed(0);
 }
 
-function getDamagePerKill(){
+function getDamagePerKO(){
   me=port;
   enemy= (me+1) % 2;
   total_percent = total_kos = 0
