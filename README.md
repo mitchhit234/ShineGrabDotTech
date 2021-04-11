@@ -1,7 +1,7 @@
 # ShineGrabDotTech
 
 <p align="center">
-![](backend/views/images/shinegrab_logo.png)
+  <img width="200" src="backend/views/images/shinegrab_logo.png" alt="ShineGrab Logo">
 </p>
 
 ## Running ShineGrabDotTech
