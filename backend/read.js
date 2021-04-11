@@ -44,12 +44,13 @@ let storage = multer.diskStorage({
       ret = ret.slice(-1);
 
       eval(fs.readFileSync('main.js')+'');
-      setPort(ret);
-      console.log(port)
+
+      //setPort(ret);
+      //console.log(waveDashes(0));
 
       //var shinegrabs = getShineGrabs();
       //console.log(shinegrabs);
-      res.render('pages/index')
+      res.render('pages/index');
       count++;
     }
    })
