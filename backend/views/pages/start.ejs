@@ -44,8 +44,6 @@
 
   </style>
 
-  <script src=../backend/script.js"></script>
-
   <div></div>
 
 
@@ -53,11 +51,11 @@
   </head>
   <body>
     <div class ="d-flex align-items-center justify-content-center" style="height: 200px">
-    <h1>{{ name }}</h1>
+    <h1><%= name %></h1>
     </div>
     <div class ="d-flex align-items-center justify-content-center" style="height: 450px">
-    <img src="../backend/assets/character_img/fox.jpg" class="images">
-    <img src="../backend/assets/character_img/falco.jpg" class="images2p">
+    <img src= "views/images/<%= char1 %>.jpg" class="images">
+    <img src= "views/images/<%= char2 %>.jpg"class="images2p">
     </div>
 
     <!-- Optional JavaScript; choose one of the two! -->
