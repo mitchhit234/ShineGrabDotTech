@@ -87,8 +87,10 @@
         <tbody>
           <tr>
             <% wavedashes.forEach(function(wavedash) { %>
-              <td scope="row"><%= wavedash.frameStart %></td>
-              <td ><%= wavedash.isGoodDash %></td>
+              <% if (wavedash.isGoodDash == false) { %>
+                <td scope="row"><%= wavedash.frameStart %></td>
+                <td>Late</td>
+              <% } %>
               </tr>
             <% }); %>         
         </tbody>
@@ -121,9 +123,15 @@
           <tr>
             <% techs.forEach(function(tech) { %>
               <td scope="row"><%= tech.frameStart %></td>
-              <td ><%= tech.techCase %></td>
+              <% if (tech.techCase == 0) { %>
+                <td>No Press</td>
+              <% } else if (tech.techCase == 1) { %>
+                <td>Late Press</td>
+              <% } else if (tech.techCase == -1) { %>
+                <td>Early Press</td>
+              <% } %>
               </tr>
-            <% }); %>            
+            <% }); %>         
         </tbody>
       </table>
     </div>
@@ -146,17 +154,25 @@
         <thead>
           <tr>
             <th scope="col">Starting Frame</th>
-            <th scope="col">Acceptable</th>
-            <th scope="col">Reason for Missing</th>
+            <th scope="col">Type</th>
+            <th scope="col">Error</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <% shinegrabs.forEach(function(shinegrab) { %>
               <td scope="row"><%= shinegrab.frameStart %></td>
-              <td ><% shinegrabs.successful %></td>
-              <td ><% shinegrabs.isPerfectJump %></td>
-              <td ><% shinegrabs.isPerfectGrab %></td>
+              <% if (shinegrab.successful == true) { %>
+              <% if (shinegrab.isPerfectJump == true && shinegrab.isPerfectGrab == true) { %>
+                <td> Perfect</td>
+                <td> None</td>
+              <%}else if (shinegrab.isPerfectJump == false && shinegrab.isPerfectGrab == true) { %>
+                <td>Acceptable</td>
+                <td>Late Jump</td>
+              <%}else if(shinegrab.isPerfectGrab == false) { %>
+                <td>Failure</td>
+                <td>Late Grab</td>
+              <% }} %>
             </tr>
             <% }); %>          
         </tbody>

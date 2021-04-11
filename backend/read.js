@@ -47,10 +47,6 @@ let storage = multer.diskStorage({
 
       setPort(ret);
 
-      var shinegrabs = getShineGrabs();
-      console.log(shinegrabs);
-      console.log(getNeutralWins());
-      console.log(getWaveDashNum());
       
       res.render('pages/index', {
         wavedashes: getWaveDashes(),
