@@ -360,7 +360,7 @@ function getInputsPerMinute(){
   return stats['overall'][0]['inputsPerMinute']['ratio'].toFixed(0);
 }
 
-function damagePerKill(){
+function getDamagePerKill(){
   player=port;
   return (stats['overall'][0]['totalDamage']/4).toFixed(0);
 }
