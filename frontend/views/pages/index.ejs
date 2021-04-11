@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.82.0">
+    <title>Heroes · Bootstrap v5.0</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/heroes/">
+
+    
+
+    <!-- Bootstrap core CSS -->
+<link href="bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      .whitespace {
+        margin-bottom: 2.5em;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+      .table th {
+        text-align: center;
+      } 
+    </style>
+
+    
+    <!-- Custom styles for this template -->
+    <link href="heroes.css" rel="stylesheet">
+  </head>
+  <% include ../../partials/2col %> < 
+  <% include ../../partials/3col %> < 
+  <body>
+<div class="px-4 py-5 my-5 text-center">
+  <img class="d-block mx-auto mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+  <h1 class="display-5 fw-bold">Basic Gameplay Stats</h1>
+  <div class="col-lg-6 mx-auto">
+    <p class="lead mb-4">Here's a brief overview of your gameplay.</p>
+    <div class="d-grid gap-2 justify-content-sm-center">
+      <!-- INJECT HTML HERE FROM JS -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Neutral Wins</th>
+            <th scope="col">Actions Per Minute</th>
+            <th scope="col">Damage Per Kill</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="neutralWins" scope="row"></th>
+            <td id="APM"></td>
+            <td id="DPK"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="b-example-divider"></div>
+
+<div class="px-4 pt-5 my-5 text-center">
+  <h1 class="display-5 fw-bold">Wavedashes</h1>
+  <div class="col-lg-6 mx-auto">
+    <p class="lead mb-4">A summary of your wavedash timings.</p>
+    <h2 class="whitespace">Acceptable Wavedash Percentage: </h2>
+    <div class="d-grid gap-2  justify-content-sm-center mb-5">
+       <!-- INJECT HTML HERE FROM JS -->
+       <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Starting Frame</th>
+            <th scope="col">Reason for Missing</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="neutralWins" scope="row"></th>
+            <td id="APM"></td>
+            <td id="DPK"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="overflow-hidden" style="max-height: 30vh;">
+    <div class="container px-5">
+    </div>
+  </div>
+</div>
+
+<div class="b-example-divider"></div>
+
+<div class="px-4 pt-5 my-5 text-center">
+  <h1 class="display-5 fw-bold">Techs</h1>
+  <div class="col-lg-6 mx-auto">
+    <p class="lead mb-4">A summary of your tech skill.</p>
+    <h2 class="whitespace">Acceptable Tech Percentage: </h2>
+    <div class="d-grid gap-2  justify-content-sm-center mb-5">
+       <!-- INJECT HTML HERE FROM JS -->
+       <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Starting Frame</th>
+            <th scope="col">Reason for Missing</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="neutralWins" scope="row"></th>
+            <td id="APM"></td>
+            <td id="DPK"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="overflow-hidden" style="max-height: 30vh;">
+    <div class="container px-5">
+    </div>
+  </div>
+</div>
+
+<div class="b-example-divider"></div>
+
+<div class="px-4 pt-5 my-5 text-center">
+  <h1 class="display-5 fw-bold">Shine Grabs</h1>
+  <div class="col-lg-6 mx-auto">
+    <p class="lead mb-4">An analysis of your shine grab skill.</p>
+    <div class="d-grid  justify-content-sm-center mb-5">
+       <!-- INJECT HTML HERE FROM JS -->
+       <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Starting Frame</th>
+            <th scope="col">Acceptable</th>
+            <th scope="col">Reason for Missing</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="neutralWins" scope="row"></th>
+            <td id="APM"></td>
+            <td id="DPK"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="overflow-hidden" style="max-height: 30vh;">
+    <div class="container px-5">
+    </div>
+  </div>
+</div>
+
+
+<div class="b-example-divider mb-0"></div>
+    <script src="bootstrap.bundle.min.js"></script>
+  </body>
+</html>
