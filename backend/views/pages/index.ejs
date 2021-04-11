@@ -31,18 +31,29 @@
           font-size: 3.5rem;
         }
       }
-      .table th {
+
+
+      .table tr {
         text-align: center;
+        font-size: 20px;
+        padding: 0px;
       } 
 
       .float-left {
         transform: rotate(45deg);
       }
 
+      .images {
+        max-width: 85%;
+        border-style: solid;
+        border-color: #5a5a5a;
+        border-radius: 2em;
+      }
+
       #container {height: 100%; width:100%; font-size: 0;}
-      #left, #middle, #right {display: inline-block; *display: inline; zoom: 1; vertical-align: top; font-size: 30px;}
-      #left {width: 25%; }
-      #middle {width: 50%; font-size: 50px;;}
+      #left, #middle, #right {display: inline-block; *display: inline; zoom: 1; vertical-align: top; font-size: 20px;}
+      #left {width: 25%;}
+      #middle {width: 50%; font-size: 50px; padding-left: 25px; padding-right: 25px;}
       #right {width: 25%;}
 
     </style>
@@ -52,30 +63,38 @@
     <link href="views/heroes.css" rel="stylesheet">
   </head>
   <body>
+
 <div class="px-4 py-5 my-5 text-center">
-  <img class="d-block mx-auto mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
-  <h1 class="display-5 fw-bold">Basic Gameplay Stats</h1>
-  <div class="col-lg-6 mx-auto">
+  <div id="container">
+    <div id="left" class="display-2 fw-bold">Stage - Dreamland</div>
+    <h1 id="middle" class="display-5 fw-bold">Basic Gameplay Stats</h1>
+    <div class="display-2 fw-bold" id="right">Tip</div>
+  </div>
     <p class="lead mb-4">Here's a brief overview of your gameplay.</p>
-    <div class="d-grid gap-2 justify-content-sm-center">
-      
+    
+    <div id="container">
+      <div id=left><img class="images" src="views/images/dreamland.png"/></div>
+    <div id= "middle"> 
+      <div class="d-grid gap-2  justify-content-sm-center mb-5">
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">Neutral Wins</th>
-            <th scope="col">Actions Per Minute</th>
-            <th scope="col">Damage Per Kill</th>
+            <th scope="col">Percent of Neutral Wins</th>
+            <th scope="col">Inputs Per Minute</th>
+            <th scope="col">Average % Damage Per KO</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td scope="row"></th>
-            <td ></td>
-            <td ></td>
+            <td><%= neutral %>%</td>
+            <td><%= inputspm %></td>
+            <td><%= damagepk %>%</td>
           </tr>
         </tbody>
       </table>
+      </div>
     </div>
+    <div id="right">Falco has a poor recovery. Try and edge guard him and your damage per KO percentage will decrease </div>
   </div>
 </div>
 
