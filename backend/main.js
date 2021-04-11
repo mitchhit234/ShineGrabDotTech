@@ -329,6 +329,17 @@ function shineGrab(startFrame) {
       shinegrabs.push(new ShineGrab(adjustedFrame,true,false,false))
     }
   }
+
+
+//Accessor Functions
+function getShineGrabs(){
+  return shinegrabs
+}
+function getWaveDashes(){
+  return wavedashes
+}
+function getTechs(){
+  return techs
 }
 
 
