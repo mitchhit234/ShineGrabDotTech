@@ -1,6 +1,8 @@
 # ShineGrabDotTech
 
+<p align="center">
 ![](backend/views/images/shinegrab_logo.png)
+</p>
 
 ## Running ShineGrabDotTech
 
