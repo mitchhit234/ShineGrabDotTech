@@ -330,4 +330,4 @@ if(wavedashes != []) {
 
   console.log(waveDashCalculations(waveDashCount, goodWaveDashes) + "% of wavedashes are acceptable")
   console.log(techCalculations(techOpportunities,hitTechs) + "% of techs hit")
-}
+}}
