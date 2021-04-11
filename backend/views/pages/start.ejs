@@ -61,6 +61,11 @@
       box-shadow: none;
       padding: 0;
       background: none;
+      outline: none;
+    }
+
+    #button:focus {
+      outline: none;
     }
 
   </style>
@@ -83,7 +88,7 @@
     </form>
 
     <form class="form-group" action="" method="GET">
-      <button class="btn" name="foo" value="1"><img src="views/images/<%= char2 %>.jpg" class="images2p btn"/></button>
+      <button class="btn" name="foo" value="1"><img src="views/images/<%= char2 %>.jpg" class="images2p"/></button>
       <h2>Player 2</h2>
     </form>
     </div>
