@@ -11,59 +11,16 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
 }
 
-//Character Class
+var port = 0;
 
-class Character{
-  constructor(){
-    this.jumpSquat = 0;
-    this.techWindow = 20;
-  }
-  getJumpSquat(){
-    return this.jumpSquat;
-  }
-  getTechWindow(){
-    return this.techWindow;
-  }
-  
-}
 
-class Spacie extends Character{
-  shineGrab(jumpSquat){
-    console.log("Shine Grabbing with jumpSquat " + jumpSquat)
-  }
-
-}
-
-class Fox extends Spacie{
-  constructor(){
-    let name = "Fox"
-    let jumpSquat = 3;
-    super();
-    console.log(name + " " + jumpSquat + " tech window " + super.getTechWindow())
-    super.shineGrab(jumpSquat);
-  }
-  
-}
-
-class Falco extends Spacie{
-  constructor(){
-    let name = "Falco"
-    let jumpSquat = 5;
-    super();
-    console.log(name + " " + jumpSquat + " tech window " + super.getTechWindow())
-    super.shineGrab(jumpSquat);
-  }
-  
-}
-
-var a = new Fox();
-var b = new Falco();
 
 // Including functions for reading, parsing, and
 // searching for action states 
 eval(fs.readFileSync('readActionState.js')+'');
 
-const game = new SlippiGame("views/uploads/temp.slp");
+//const game = new SlippiGame("views/uploads/temp.slp");
+const game  = new SlippiGame("testing/falco_test.slp")
 
 // Shine = 'Reflector Ground Loop' (fox only)
 // Jump Squat = 'KneeBend'
@@ -121,13 +78,14 @@ const combos = stats.combos;
 // openingType (neutral wins), 
 const conversions = stats.conversions;
 
-var port = 0;
+
 var window = 0; // current action window size
 var techOpportunities = 0;
 var hitTechs = 0;
 var currentTechWindow = 0;
 var goodWaveDashes = 0
 var waveDashCount = 0
+var waveDashTiming = 0
 
 
 //Read in Charatcer Tips
@@ -164,6 +122,124 @@ function Wavedash(frameStart, isGoodDash) {
 var shinegrabs = new Array(); // array of shinegrabs
 var wavedashes = new Array(); 
 var techs = new Array(); 
+
+
+
+
+//Character Class
+
+class Character{
+  constructor(name, jumpSquat){
+    this.jumpSquat = jumpSquat
+    this.name = name
+    this.techWindow = 20
+  }
+  getJumpSquat(){
+    return this.jumpSquat;
+  }
+  getTechWindow(){
+    return this.techWindow;
+  }
+  getName(){
+    return this.name;
+  }
+  getJumpSquat(){
+    return this.jumpSquat;
+  }
+  testFunction(){
+    console.log(this.name + " has jumpsquat " + this.jumpSquat)
+  }
+  waveDashTest(){
+    console.log("Acceptable wavedash with " + this.name + " requires an airdodge press on frame " + (this.jumpSquat+1) + " or before")
+  }
+  getNextFrameAction(frame) {
+    var startAction = frames[frame].players[port]['post']['actionStateId']
+    while(frames[frame].players[port]['post']['actionStateId'] == startAction) {
+      frame++;
+    }
+    return frame
+  }
+  waveDashes(startFrame){
+    var nextFrameAction = this.getNextFrameAction(startFrame)
+    waveDashTiming = nextFrameAction - startFrame;
+    var badTiming = false 
+    var nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+    var goodTiming = this.jumpSquat+1
+    if(nextAction == AIRDODGE || nextAction == LANDINGFALLSPECIAL){
+      if(waveDashTiming > goodTiming){
+        badTiming = true
+        // console.log("HAS BAD TIMING " + (nextFrameAction + 123))
+      }
+    }
+    else{
+      nextFrameAction = this.checkJumps(startFrame)
+      nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+      waveDashTiming = nextFrameAction - startFrame;
+      if(nextAction == AIRDODGE || nextAction == LANDINGFALLSPECIAL){
+        if(waveDashTiming > goodTiming){
+          // console.log("HAS BAD TIMING " + (nextFrameAction + 123))
+          badTiming = true
+        }
+      }
+      wavedashes.push(new Wavedash(nextFrameAction+123, !badTiming))
+    }
+    if(badTiming!=true)
+      goodWaveDashes++
+
+
+    console.log(this.name + " Class Wavedash Found, has bad timing " + badTiming + " at frame " + nextFrameAction)
+    return [badTiming, nextFrameAction]
+  }
+  checkJumps(startFrame){
+    var nextFrameAction = getNextFrameAction(startFrame)
+    var nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+  
+    if(nextAction == JUMPF || nextAction == JUMPB) {
+      nextFrameAction = getNextFrameAction(nextFrameAction)
+      nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+    }
+    return nextFrameAction;
+  }
+}
+
+class Spacie extends Character{
+  shineGrab(){
+    console.log("Shine Grabbing with jumpSquat " + this.jumpSquat)
+  }
+
+}
+
+class Fox extends Spacie{
+  constructor(){
+    let name = "Fox"
+    let jumpSquat = 3;
+    super(name, jumpSquat);
+    console.log(super.getName() + " " + super.getJumpSquat() + " tech window " + super.getTechWindow())
+    super.shineGrab();
+  }
+  
+}
+
+class Falco extends Spacie{
+  constructor(){
+    let name = "Falco"
+    let jumpSquat = 5;
+    super(name, jumpSquat);
+    console.log(super.getName() + " " + super.getJumpSquat() + " tech window " + super.getTechWindow())
+    super.shineGrab(jumpSquat);
+  }
+  
+}
+
+var a = new Fox();
+var b = new Falco();
+
+//a.waveDashTest()
+//b.waveDashTest()
+
+
+
+
 
 function setPort(portNum){
   port = portNum;
@@ -374,7 +450,8 @@ for(frame=GAME_START;frame<GAME_END;frame++) {
     frame = frame + window
   }
   else if (actionStateId == JUMPF || actionStateId == JUMPB || actionStateId == JUMP_SQUAT){
-    waveDashes(frame)
+    //waveDashes(frame)
+    a.waveDashes(frame)
     frame = frame + waveDashTiming
     waveDashCount++
   }
