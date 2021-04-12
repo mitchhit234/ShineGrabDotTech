@@ -2,7 +2,7 @@
 
 var fs = require('fs');
 const { settings } = require('cluster');
-const { default: SlippiGame } = require('@slippi/slippi-js');
+const { default: SlippiGame, ConsoleConnection } = require('@slippi/slippi-js');
 const { get } = require('https');
 
 function getRandomInt(min, max) {
@@ -11,6 +11,53 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
 }
 
+//Character Class
+
+class Character{
+  constructor(){
+    this.jumpSquat = 0;
+    this.techWindow = 20;
+  }
+  getJumpSquat(){
+    return this.jumpSquat;
+  }
+  getTechWindow(){
+    return this.techWindow;
+  }
+  
+}
+
+class Spacie extends Character{
+  shineGrab(jumpSquat){
+    console.log("Shine Grabbing with jumpSquat " + jumpSquat)
+  }
+
+}
+
+class Fox extends Spacie{
+  constructor(){
+    let name = "Fox"
+    let jumpSquat = 3;
+    super();
+    console.log(name + " " + jumpSquat + " tech window " + super.getTechWindow())
+    super.shineGrab(jumpSquat);
+  }
+  
+}
+
+class Falco extends Spacie{
+  constructor(){
+    let name = "Falco"
+    let jumpSquat = 5;
+    super();
+    console.log(name + " " + jumpSquat + " tech window " + super.getTechWindow())
+    super.shineGrab(jumpSquat);
+  }
+  
+}
+
+var a = new Fox();
+var b = new Falco();
 
 // Including functions for reading, parsing, and
 // searching for action states 
