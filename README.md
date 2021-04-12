@@ -6,7 +6,7 @@
 
 ## Running ShineGrabDotTech
 
-Dependencies listed in packages.json
+Dependencies listed in packages.json. Install npm then run 'npm i'
 
 Execute web application by invoking 'node read.js' in the scope of the backend directory
 

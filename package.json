@@ -1,0 +1,25 @@
+{
+  "name": "git",
+  "dependencies": {
+    "@slippi/slippi-js": "^5.1.1",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "multer": "^1.4.2"
+  },
+  "description": "<p align=\"center\">   <img width=\"200\" src=\"backend/views/images/shinegrab_logo.png\" alt=\"ShineGrab Logo\"> </p>",
+  "version": "1.0.0",
+  "main": "read.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mitchhit234/ShineGrabDotTech.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mitchhit234/ShineGrabDotTech/issues"
+  },
+  "homepage": "https://github.com/mitchhit234/ShineGrabDotTech#readme"
+}
