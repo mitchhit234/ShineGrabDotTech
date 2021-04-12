@@ -132,6 +132,23 @@ var techs = new Array();
 //which character you want to test at what time.
 //So if you want to test falco WD output, go down to the bottom and uncomment out falco.waveDashes(frame)
 
+//Class Character is the base class that all individual characters will inherit.
+  //Character has access to any and every method and variable that all different melee characters have.
+  //These are things like jumpsquat, name, tech window, jump cancel grab. These are all things that every melee character has access to.
+
+//Class Spacie inherits Character class, and Fox and Falco will inherit Spacie.
+  //Spacie has access to every method that both Fox and Falco have access to and no one else. Things like Shinegrab, Waveshine, Jump out of Shine.
+  //Pretty much anything to do with shine will end up going into the Spacie class.
+
+//Class Fox and Class Falco will inherit the Spacie class
+  //Class Fox and Class Falco will contain things that only that particular space animal have access to that the other doesn't.
+  //Think standing double laser with fox, or Waveshine Upsmash (falco has this but it's like never used, not worth tracking), or double laser from ledge.
+
+//Class {Character} will inherit the Character class.
+  //For all other characters that aren't Fox or Falco, they will just inherit the Character class straight up.
+  //Within each individual {Character}'s class, will contain things that only that character can do.
+  //Think Falcon gentleman, marth chaingrab on fox, whatever we want.
+
 
 class Character{
   constructor(name, jumpSquat){
@@ -152,6 +169,11 @@ class Character{
     return this.jumpSquat;
   }
   getNextFrameAction(frame) {
+    if(frame > GAME_END){
+      frame = GAME_END
+      return frame
+    }
+
     var startAction = frames[frame].players[port]['post']['actionStateId']
     
     while(frames[frame].players[port]['post']['actionStateId'] == startAction) {
@@ -251,11 +273,77 @@ class Character{
   return [techFrame+123,techCase] // adjust for the slippi video
   
   }
+  jcGrab(startFrame) {
+    var isGrab = false
+    var nextFrameAction = this.getNextFrameAction(startFrame)
+    var nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+    var grabWindow = nextFrameAction - startFrame // The number of frames to skip
+    var isPerfect = false
+    if(nextAction == GRAB) {
+      isGrab = true
+      // acceptable window for a good shine grab
+      if(grabWindow <= (this.getJumpSquat-1)) {
+        isPerfect = true
+      }
+    }
+    else {
+      // If the next action is jump forward, skip it because we dont care
+      nextFrameAction = this.checkJumps(startFrame)
+      nextAction = nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+        if(nextAction == NAIR) {
+          isGrab = true // still counts as a grab attempt
+          isPerfect = false
+        }
+    }
+    return [isGrab, isPerfect]
+  }
+  
 }
 
 class Spacie extends Character{
-  shineGrab(){
-    console.log("Shine Grabbing with jumpSquat " + this.jumpSquat)
+  shineJump(startFrame,isPerfect) {
+    var isShineJump = false
+    var nextFrameAction = super.getNextFrameAction(startFrame)
+    var nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+    window = nextFrameAction - startFrame // The number of frames to skip
+    if(nextAction == JUMP_SQUAT) {
+      isShineJump = true
+      // acceptable window for a good shine grab
+      console.log(window + " jumped out of shine")
+      console.log(super.getJumpSquat())
+      if(nextFrameAction - startFrame <= super.getJumpSquat()) {
+        isPerfect = true
+      }
+      else {
+        isPerfect = false
+      }
+    }
+    return [isShineJump,isPerfect]
+  }
+  shineGrab(startFrame) {
+    var isPerfect = false
+    // call shinejump
+    var isShineGrab = this.shineJump(startFrame, isPerfect) && super.jcGrab(startFrame+window)
+    // 0 index idicates if shinegrab is successful
+    if(isShineGrab[0]) {
+      var adjustedFrame = startFrame+123
+      // good shine grab!
+      if(isShineGrab[0,1] != false) {
+        shinegrabs.push(new ShineGrab(adjustedFrame,true,true,true))
+        console.log("Good Shine Grab at frame " + adjustedFrame)
+      } 
+      // Slow jump
+      else if(isShineGrab[1,1] == false) {
+        shinegrabs.push(new ShineGrab(adjustedFrame,true,false,true))
+        console.log("Slow Jump Shine Grab at frame " + adjustedFrame)
+      }
+      // Nair'd instead 
+      else if(isShineGrab[0,1] == false) {
+        shinegrabs.push(new ShineGrab(adjustedFrame,true,false,false))
+        console.log("Bad Shinegrab, Late Grab " + adjustedFrame)
+      }
+    }
+  
   }
 
 }
@@ -266,7 +354,6 @@ class Fox extends Spacie{
     let jumpSquat = 3;
     super(name, jumpSquat);
     console.log(super.getName() + " " + super.getJumpSquat() + " tech window " + super.getTechWindow())
-    super.shineGrab();
   }
   
 }
@@ -277,7 +364,6 @@ class Falco extends Spacie{
     let jumpSquat = 5;
     super(name, jumpSquat);
     console.log(super.getName() + " " + super.getJumpSquat() + " tech window " + super.getTechWindow())
-    super.shineGrab(jumpSquat);
   }
   
 }
@@ -492,7 +578,7 @@ for(frame=GAME_START;frame<GAME_END;frame++) {
     //techs.push(new Tech(missedTechTuple[0],missedTechTuple[1]))
 
     //Uncomment which you want to check
-    falco.missedTech(frame)
+    //falco.missedTech(frame)
     //fox.missedTech(frame)
     frame = frame + currentTechWindow
   }
@@ -503,7 +589,9 @@ for(frame=GAME_START;frame<GAME_END;frame++) {
   }
   else if(actionStateId == SHINE){
     // call shinegrab
-    shineGrab(frame)
+    //shineGrab(frame)
+    //falco.shineGrab(frame)
+    fox.shineGrab(frame)
     frame = frame + window
   }
   else if (actionStateId == JUMPF || actionStateId == JUMPB || actionStateId == JUMP_SQUAT){
