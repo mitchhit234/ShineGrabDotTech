@@ -20,7 +20,7 @@ var port = 0;
 eval(fs.readFileSync('readActionState.js')+'');
 
 //const game = new SlippiGame("views/uploads/temp.slp");
-const game  = new SlippiGame("testing/falco_test.slp")
+const game  = new SlippiGame("testing/Fox/sfat_s2j.slp")
 
 // Shine = 'Reflector Ground Loop' (fox only)
 // Jump Squat = 'KneeBend'
@@ -128,6 +128,11 @@ var techs = new Array();
 
 //Character Class
 
+//Make sure if you're testing the different characters and classes, you go down to the driver function (the loop at the bottom), and uncomment out
+//which character you want to test at what time.
+//So if you want to test falco WD output, go down to the bottom and uncomment out falco.waveDashes(frame)
+
+
 class Character{
   constructor(name, jumpSquat){
     this.jumpSquat = jumpSquat
@@ -146,16 +151,15 @@ class Character{
   getJumpSquat(){
     return this.jumpSquat;
   }
-  testFunction(){
-    console.log(this.name + " has jumpsquat " + this.jumpSquat)
-  }
-  waveDashTest(){
-    console.log("Acceptable wavedash with " + this.name + " requires an airdodge press on frame " + (this.jumpSquat+1) + " or before")
-  }
   getNextFrameAction(frame) {
     var startAction = frames[frame].players[port]['post']['actionStateId']
+    
     while(frames[frame].players[port]['post']['actionStateId'] == startAction) {
       frame++;
+      if(frame > GAME_END){
+        frame = GAME_END
+        return frame
+      }
     }
     return frame
   }
@@ -168,7 +172,7 @@ class Character{
     if(nextAction == AIRDODGE || nextAction == LANDINGFALLSPECIAL){
       if(waveDashTiming > goodTiming){
         badTiming = true
-        // console.log("HAS BAD TIMING " + (nextFrameAction + 123))
+        console.log("HAS BAD TIMING " + (nextFrameAction + 123))
       }
     }
     else{
@@ -177,28 +181,75 @@ class Character{
       waveDashTiming = nextFrameAction - startFrame;
       if(nextAction == AIRDODGE || nextAction == LANDINGFALLSPECIAL){
         if(waveDashTiming > goodTiming){
-          // console.log("HAS BAD TIMING " + (nextFrameAction + 123))
+          console.log("HAS BAD TIMING " + (nextFrameAction + 123))
           badTiming = true
         }
       }
       wavedashes.push(new Wavedash(nextFrameAction+123, !badTiming))
     }
-    if(badTiming!=true)
+    if(badTiming!=true){
       goodWaveDashes++
+      console.log("HAS GOOD TIMING " + (nextFrameAction + 123))
+    }
 
 
-    console.log(this.name + " Class Wavedash Found, has bad timing " + badTiming + " at frame " + nextFrameAction)
     return [badTiming, nextFrameAction]
   }
   checkJumps(startFrame){
-    var nextFrameAction = getNextFrameAction(startFrame)
+    var nextFrameAction = this.getNextFrameAction(startFrame)
     var nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
   
     if(nextAction == JUMPF || nextAction == JUMPB) {
-      nextFrameAction = getNextFrameAction(nextFrameAction)
+      nextFrameAction = this.getNextFrameAction(nextFrameAction)
       nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
     }
     return nextFrameAction;
+  }
+  determineTechCase(techCase, startFrame){
+    if(techCase == -1){
+      console.log("Pressed Tech too Early on missed tech at frame " + (startFrame + 123))
+      return techCase;
+    }else if( techCase == 0){
+      console.log("Never Pressed Tech on missed tech at frame " + (startFrame + 123))
+      return techCase;
+    }else if (techCase == 1){
+      console.log("Pressed Tech Too Late on missed tech at frame " + (startFrame + 123))
+    }
+  }
+  missedTech(startFrame){
+    var nextFrameAction = this.getNextFrameAction(startFrame)
+    currentTechWindow = nextFrameAction - startFrame;
+    var possibleTech = startFrame - this.getTechWindow();
+    var missedTech = false
+    var currentAction = frames[startFrame].players[port]['post']['actionStateId']
+    var techCase = 0;
+    var techFrame = 0;
+  
+    if(currentAction == MISSED_TECH_DOWN || currentAction == MISSED_TECH_UP){
+      missedTech = true;
+    }
+    var frame;
+    if( missedTech == true){
+      for(frame = (startFrame - (this.getTechWindow() * 2)); frame< (startFrame + this.getTechWindow()); frame++){
+        if(frames[frame].players[port]['pre']['trigger'] == 1){
+          if(frame < possibleTech){
+            techCase = -1 // pressed tech too early, before base case 
+            techFrame = frame
+          }
+          else if(frame > startFrame){
+            techCase = 1 // pressed tech too late, after base case
+            techFrame = frame
+          }
+          else{
+            techFrame = frame
+          }
+        }
+      }
+    }
+
+  this.determineTechCase(techCase, startFrame)
+  return [techFrame+123,techCase] // adjust for the slippi video
+  
   }
 }
 
@@ -231,8 +282,8 @@ class Falco extends Spacie{
   
 }
 
-var a = new Fox();
-var b = new Falco();
+var fox = new Fox();
+var falco = new Falco();
 
 //a.waveDashTest()
 //b.waveDashTest()
@@ -282,15 +333,15 @@ function waveDashes(startFrame){
 }
 
 //prints How Player Missed Tech
-function determineTechCase(techCase){
+function determineTechCase(techCase, techFrame){
   if(techCase == -1){
-    console.log("Pressed Tech too Early")
+    console.log("Pressed Tech too Early on tech at frame " + techFrame)
     return techCase;
   }else if( techCase == 0){
-    console.log("Never Pressed Tech")
+    console.log("Never Pressed Tech on tech at frame " + techFrame)
     return techCase;
   }else if (techCase == 1){
-    console.log("Pressed Tech Too Late")
+    console.log("Pressed Tech Too Late on tech at frame " + techFrame)
   }
 }
 
@@ -325,6 +376,8 @@ function missedTech(startFrame){
       }
     }
   }
+this.determineTechCase(techCase)
+
 return [techFrame+123,techCase] // adjust for the slippi video
 
 }
@@ -435,8 +488,12 @@ for(frame=GAME_START;frame<GAME_END;frame++) {
   var actionStateId = frames[frame].players[port]['post']['actionStateId']
   if(actionStateId == MISSED_TECH_DOWN ||actionStateId == MISSED_TECH_UP) {
     techOpportunities++
-    var missedTechTuple = missedTech(frame) // returns 0: frame 1: techCase
-    techs.push(new Tech(missedTechTuple[0],missedTechTuple[1]))
+    //var missedTechTuple = missedTech(frame) // returns 0: frame 1: techCase
+    //techs.push(new Tech(missedTechTuple[0],missedTechTuple[1]))
+
+    //Uncomment which you want to check
+    falco.missedTech(frame)
+    //fox.missedTech(frame)
     frame = frame + currentTechWindow
   }
   else if(actionStateId == NEUTRAL_TECH || actionStateId == BACK_TECH || actionStateId == FORWARD_TECH){
@@ -451,7 +508,12 @@ for(frame=GAME_START;frame<GAME_END;frame++) {
   }
   else if (actionStateId == JUMPF || actionStateId == JUMPB || actionStateId == JUMP_SQUAT){
     //waveDashes(frame)
-    a.waveDashes(frame)
+
+    //Uncomment which you want to check
+    //fox.waveDashes(frame)
+    //falco.waveDashes(frame)
+
+
     frame = frame + waveDashTiming
     waveDashCount++
   }
