@@ -368,6 +368,33 @@ class Falco extends Spacie{
   
 }
 
+class Sheik extends Character{
+  constructor(){
+    let name = "Sheik"
+    let jumpSquat = 3;
+    super(name, jumpSquat);
+    console.log(super.getName() + " " + super.getJumpSquat() + " tech window " + super.getTechWindow())
+  }
+}
+
+class Falcon extends Character{
+  constructor(){
+    let name = "Falcon"
+    let jumpSquat = 4;
+    super(name, jumpSquat);
+    console.log(super.getName() + " " + super.getJumpSquat() + " tech window " + super.getTechWindow())
+  }
+}
+
+class Marth extends Character{
+  constructor(){
+    let name = "Marth"
+    let jumpSquat = 4;
+    super(name, jumpSquat);
+    console.log(super.getName() + " " + super.getJumpSquat() + " tech window " + super.getTechWindow())
+  }
+}
+
 var fox = new Fox();
 var falco = new Falco();
 
