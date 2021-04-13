@@ -384,12 +384,17 @@ function getDamagePerKO(){
   me=port;
   enemy= (me+1) % 2;
   total_percent = total_kos = 0
-  for(var i=0; i<stats.stocks.length;i++){
+  //last object in stock array doesnt correspond to a death,
+  //but instead the ending statistics for the winner at the 
+  //time of winning
+  for(var i=0; i<stats.stocks.length-1;i++){
     if(stats.stocks[i]['playerIndex'] == enemy){
       total_percent += stats.stocks[i]['endPercent']
       total_kos += 1
     }
   }
+  console.log(total_percent)
+  console.log(total_kos)
   //ONLY USED TO NOT CAUSE ERRORS FOR GAME FILES BEFORE 2019
   if (total_percent == 0){
     return getRandomInt(90,110)
