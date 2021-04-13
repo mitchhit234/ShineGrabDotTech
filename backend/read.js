@@ -45,7 +45,7 @@ let storage = multer.diskStorage({
       var ret = req.originalUrl;
       ret = ret.slice(-1);
 
-      eval(fs.readFileSync('main.js')+'');
+      eval(fs.readFileSync('header.js')+'');
       setPort(ret);
       
       enemy = (port+1) % 2;
