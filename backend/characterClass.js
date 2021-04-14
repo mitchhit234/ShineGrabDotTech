@@ -1,53 +1,15 @@
 console.log("Enter characterClass.js")
+if(ret === undefined){
+  console.log("undefined characterClass")
+}
 var fs = require('fs');
 class Character{
-  constructor(name, jumpSquat){
+  constructor(name, jumpSquat, isSpacie){
     this.jumpSquat = jumpSquat
     this.name = name
     this.techWindow = 20
+    this.isSpacie = isSpacie
   }
 }
 
-class Spacie extends Character{
-}
-
-class Fox extends Spacie{
-  constructor(){
-    let name = "Fox"
-    let jumpSquat = 3;
-    super(name, jumpSquat);
-  }    
-}
-  
-class Falco extends Spacie{
-  constructor(){
-    let name = "Falco"
-    let jumpSquat = 5;
-    super(name, jumpSquat);
-  }    
-}
-  
-class Sheik extends Character{
-  constructor(){
-    let name = "Sheik"  
-    let jumpSquat = 3;  
-    super(name, jumpSquat);  
-  }    
-}
-  
-class Falcon extends Character{
-  constructor(){ 
-    let name = "Falcon"  
-    let jumpSquat = 4;  
-    super(name, jumpSquat);  
-  }
-}  
-  
-class Marth extends Character{
-  constructor(){  
-    let name = "Marth"
-    let jumpSquat = 4;
-    super(name, jumpSquat);
-  }
-}
 eval(fs.readFileSync('characterMethods.js')+'');

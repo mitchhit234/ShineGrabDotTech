@@ -1,4 +1,5 @@
 var fs = require('fs');
+
 const { settings } = require('cluster');
 const { default: SlippiGame } = require('@slippi/slippi-js');
 const { get } = require('https');
@@ -6,6 +7,7 @@ const { setPriority } = require('os');
 
 // Including functions for reading, parsing, and
 // searching for action states 
+var ret = 0
 eval(fs.readFileSync('readActionState.js')+'');
 
 
@@ -24,6 +26,7 @@ app.use('/views/', express.static('./views'));
 
 //Used in posting the correct page later
 var count = 0;
+var enemy_name
 
  
 let storage = multer.diskStorage({
@@ -42,20 +45,25 @@ let storage = multer.diskStorage({
       count++;
     }
     else{
-      var ret = req.originalUrl;
+      ret = req.originalUrl;
       ret = ret.slice(-1);
 
       eval(fs.readFileSync('header.js')+'');
+      console.log("After Header.js")
       setPort(ret);
+
       
-      enemy = (port+1) % 2;
       const game2 = new SlippiGame("views/uploads/temp.slp");
       const sets = game2.getSettings();
-      enemy_ID = sets.players[enemy]['characterId'];
+      const stats = game2.getStats();
+      var playerIndex = stats.overall[ret]['playerIndex']
+      var opponentIndex = stats.overall[ret]['opponentIndex']
+      enemy_ID = sets.players[opponentIndex]['characterId'];
       enemy_name = getCharacterNames(enemy_ID)
       enemy_file_name = fileReadable(enemy_name)
 
       var stageName = getStageName(sets.stageId);
+      //console.log(stageName + " stageName")
       
       res.render('pages/index', {
         wavedashes: getWaveDashes(),

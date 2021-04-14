@@ -1,5 +1,6 @@
 var fs = require('fs');
 console.log("Enter header.js")
+
 const { settings } = require('cluster');
 const { default: SlippiGame, ConsoleConnection } = require('@slippi/slippi-js');
 const { get } = require('https');
@@ -17,6 +18,9 @@ var port = 0;
 // Including functions for reading, parsing, and
 // searching for action states 
 eval(fs.readFileSync('readActionState.js')+'');
+if(ret === undefined){
+  console.log("undefined header")
+}
 
 //const game = new SlippiGame("views/uploads/temp.slp");
 const game  = new SlippiGame("views/uploads/temp.slp")
@@ -44,7 +48,7 @@ const BACK_TECH = getActionStateID(foxIDs, 'PassiveStandB')
 const AIRDODGE = getActionStateID(foxIDs, 'EscapeAir')
 const LANDINGFALLSPECIAL = getActionStateID(foxIDs, 'LandingFallSpecial')
 
-
+const gameSettings = game.getSettings();
 
 // *lastFrame* gives the total number of frames in the
 // game (not including -123 to 0 before players can act)

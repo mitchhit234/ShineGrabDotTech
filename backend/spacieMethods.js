@@ -1,9 +1,12 @@
 console.log("Enter spacieClass.js")
+if(ret === undefined){
+  console.log("undefined spacieMethods")
+}
 var fs = require('fs');
 Spacie.prototype.shineJump = function(startFrame,isPerfect) {
     var isShineJump = false
     var nextFrameAction = this.getNextFrameAction(startFrame)
-    var nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+    var nextAction = frames[nextFrameAction].players[playerIndex]['post']['actionStateId']
     window = nextFrameAction - startFrame // The number of frames to skip
     if(nextAction == JUMP_SQUAT) {
       isShineJump = true
@@ -16,8 +19,8 @@ Spacie.prototype.shineJump = function(startFrame,isPerfect) {
       }
     }
     return [isShineJump,isPerfect]
-  }
-  Spacie.prototype.shineGrab = function(startFrame) {
+}
+Spacie.prototype.shineGrab = function(startFrame) {
     var isPerfect = false
     // call shinejump
     var isShineGrab = this.shineJump(startFrame, isPerfect) && this.jcGrab(startFrame+window)
@@ -38,6 +41,7 @@ Spacie.prototype.shineJump = function(startFrame,isPerfect) {
       }
     }
   
-  }
+}
+
 
   eval(fs.readFileSync('namedCharacterClasses.js')+'');

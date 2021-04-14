@@ -1,4 +1,7 @@
 console.log("Enter characterMethods.js")
+if(ret === undefined){
+  console.log("undefined characterMethods")
+}
 var fs = require('fs');
   Character.prototype.getJumpSquat = function(){
     return this.jumpSquat;
@@ -9,15 +12,18 @@ var fs = require('fs');
   Character.prototype.getName = function(){
     return this.name;
   }
+  Character.prototype.getSpacie = function(){
+    return this.isSpacie;
+  }
   Character.prototype.getNextFrameAction = function(frame) {
     if(frame > GAME_END){
       frame = GAME_END
       return frame
     }
   
-    var startAction = frames[frame].players[port]['post']['actionStateId']
+    var startAction = frames[frame].players[playerIndex]['post']['actionStateId']
     
-    while(frames[frame].players[port]['post']['actionStateId'] == startAction) {
+    while(frames[frame].players[playerIndex]['post']['actionStateId'] == startAction) {
       frame++;
       if(frame > GAME_END){
         frame = GAME_END
@@ -30,7 +36,7 @@ var fs = require('fs');
     var nextFrameAction = this.getNextFrameAction(startFrame)
     waveDashTiming = nextFrameAction - startFrame;
     var badTiming = false 
-    var nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+    var nextAction = frames[nextFrameAction].players[playerIndex]['post']['actionStateId']
     var goodTiming = this.getJumpSquat()+1
     if(nextAction == AIRDODGE || nextAction == LANDINGFALLSPECIAL){
       if(waveDashTiming > goodTiming){
@@ -40,7 +46,7 @@ var fs = require('fs');
     }
     else{
       nextFrameAction = this.checkJumps(startFrame)
-      nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+      nextAction = frames[nextFrameAction].players[playerIndex]['post']['actionStateId']
       waveDashTiming = nextFrameAction - startFrame;
       if(nextAction == AIRDODGE || nextAction == LANDINGFALLSPECIAL){
         if(waveDashTiming > goodTiming){
@@ -58,11 +64,11 @@ var fs = require('fs');
   }
   Character.prototype.checkJumps = function(startFrame){
     var nextFrameAction = this.getNextFrameAction(startFrame)
-    var nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+    var nextAction = frames[nextFrameAction].players[playerIndex]['post']['actionStateId']
   
     if(nextAction == JUMPF || nextAction == JUMPB) {
       nextFrameAction = this.getNextFrameAction(nextFrameAction)
-      nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+      nextAction = frames[nextFrameAction].players[playerIndex]['post']['actionStateId']
     }
     return nextFrameAction;
   }
@@ -82,7 +88,7 @@ var fs = require('fs');
     currentTechWindow = nextFrameAction - startFrame;
     var possibleTech = startFrame - this.getTechWindow();
     var missedTech = false
-    var currentAction = frames[startFrame].players[port]['post']['actionStateId']
+    var currentAction = frames[startFrame].players[playerIndex]['post']['actionStateId']
     var techCase = 0;
     var techFrame = 0;
   
@@ -92,7 +98,7 @@ var fs = require('fs');
     var frame;
     if( missedTech == true){
       for(frame = (startFrame - (this.getTechWindow() * 2)); frame< (startFrame + this.getTechWindow()); frame++){
-        if(frames[frame].players[port]['pre']['trigger'] == 1){
+        if(frames[frame].players[playerIndex]['pre']['trigger'] == 1){
           if(frame < possibleTech){
             techCase = -1 // pressed tech too early, before base case 
             techFrame = frame
@@ -115,7 +121,7 @@ var fs = require('fs');
   Character.prototype.jcGrab = function(startFrame) {
     var isGrab = false
     var nextFrameAction = this.getNextFrameAction(startFrame)
-    var nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+    var nextAction = frames[nextFrameAction].players[playerIndex]['post']['actionStateId']
     var grabWindow = nextFrameAction - startFrame // The number of frames to skip
     var isPerfect = false
     if(nextAction == GRAB) {
@@ -128,7 +134,7 @@ var fs = require('fs');
     else {
       // If the next action is jump forward, skip it because we dont care
       nextFrameAction = this.checkJumps(startFrame)
-      nextAction = nextAction = frames[nextFrameAction].players[port]['post']['actionStateId']
+      nextAction = nextAction = frames[nextFrameAction].players[playerIndex]['post']['actionStateId']
         if(nextAction == NAIR) {
           isGrab = true // still counts as a grab attempt
           isPerfect = false
@@ -136,5 +142,6 @@ var fs = require('fs');
     }
     return [isGrab, isPerfect]
   }
+  
 
 eval(fs.readFileSync('spacieClass.js')+'');

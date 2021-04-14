@@ -1,5 +1,11 @@
 // YO: SLIPPI REPLAY PARSER INDEXES AT 0 BUT SLIPPI.JS INDEXES AT -123
 //Read in Charatcer Tips
+
+if(ret === undefined){
+  console.log("undefined main")
+}
+
+console.log("Enter Main")
 function getTips(char) {
   try {
     var fileName = 'assets/' + char + '_tips.txt';
@@ -90,20 +96,50 @@ function getTechs(){
 }
 
 
-var fox = new Fox();
-var falco = new Falco();
+const currentGame = new SlippiGame("views/uploads/temp.slp");
+const currentSettings = currentGame.getSettings();
+playerCharacterId = currentSettings.players[ret]['characterId']
+playerCharacterName = getCharacterNames(playerCharacterId)
+var playerIndex = (currentSettings.players[ret]['port'] - 1)
+//console.log(stats)
+
+//Create character object
+if(playerCharacterName == "Fox"){
+  console.log("new Fox created")
+  var character = new Fox();
+}
+else if(playerCharacterName == "Falco"){
+  console.log("new Falco created")
+  var character = new Falco();
+}
+else if(playerCharacterName == "Marth"){
+  console.log("new Marth created")
+  var character = new Marth();
+}
+else if(playerCharacterName == "Sheik"){
+  console.log("new Sheik created")
+  var character = new Sheik();
+}
+else if (playerCharacterName == "Captain Falcon"){
+  console.log("new Falcon created")
+  var character = new Falcon();
+}
+else{
+  console.log("That character hasn't been implemented yet")
+  return
+}
+
+
 
 var frame = 0;
 for(frame=GAME_START;frame<GAME_END;frame++) {
-  var actionStateId = frames[frame].players[port]['post']['actionStateId']
+  var actionStateId = frames[frame].players[playerIndex]['post']['actionStateId']
   if(actionStateId == MISSED_TECH_DOWN ||actionStateId == MISSED_TECH_UP) {
     techOpportunities++
      // returns 0: frame 1: techCase
-    //techs.push(new Tech(missedTechTuple[0],missedTechTuple[1]))
 
     //Uncomment which you want to check
-    var missedTechTuple = fox.missedTech(frame)
-    //var missedTechTuple = falco.missedTech(frame)
+    var missedTechTuple = character.missedTech(frame)
     techs.push(new Tech(missedTechTuple[0],missedTechTuple[1]))
     frame = frame + currentTechWindow
   }
@@ -114,18 +150,16 @@ for(frame=GAME_START;frame<GAME_END;frame++) {
   }
   else if(actionStateId == SHINE){
     // call shinegrab
-    //shineGrab(frame)
-    //falco.shineGrab(frame)
-    fox.shineGrab(frame)
+    if(character.getSpacie() == true){
+      character.shineGrab(frame)
+    }
     frame = frame + window
   }
   else if (actionStateId == JUMPF || actionStateId == JUMPB || actionStateId == JUMP_SQUAT){
     //waveDashes(frame)
 
     //Uncomment which you want to check
-    fox.waveDashes(frame)
-    //falco.waveDashes(frame)
-
+    character.waveDashes(frame)
 
     frame = frame + waveDashTiming
     waveDashCount++
@@ -146,14 +180,13 @@ if(wavedashes != []) {
     //console.log(wavedashes[i])
   } 
 
-  //console.log(waveDashCalculations(waveDashCount, goodWaveDashes) + "% of wavedashes are acceptable")
-  //console.log(techCalculations(techOpportunities,hitTechs) + "% of techs hit")
+
 }
 
 // Mitchell's Le Epic Functions
 
 function getNeutralWins(){
-  player = port;
+  player = playerIndex;
   mine = theirs = 0;
   for(var i = 0; i < conversions.length; i++){
     if(conversions[i]['openingType'] == 'neutral-win'){
@@ -175,12 +208,12 @@ function getWaveDashNum(){
 }
 
 function getInputsPerMinute(){
-  player = port;
+  player = playerIndex;
   return stats['overall'][0]['inputsPerMinute']['ratio'].toFixed(0);
 }
 
 function getDamagePerKO(){
-  me=port;
+  me=playerIndex;
   enemy= (me+1) % 2;
   total_percent = total_kos = 0
   for(var i=0; i<stats.stocks.length;i++){
@@ -197,3 +230,5 @@ function getDamagePerKO(){
   return (total_percent/total_kos).toFixed(0);
   }
 }
+
+console.log("Exit Main")

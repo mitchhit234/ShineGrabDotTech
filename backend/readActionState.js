@@ -1,4 +1,9 @@
 var fs = require('fs');
+if(ret === undefined){
+  console.log("undefined readActionState")
+}
+
+//Ret isnt found in Character Action State
 
 // Divides our text files into arrays
 // Indexes seperated by newline
@@ -8,6 +13,7 @@ function splitLines(t){
 
 // Input string of character name
 // Output array of state name to stateID array
+
 function readCharacterActionState(character_name){
   try {
     var fileName = 'assets/' + character_name + '.txt';
