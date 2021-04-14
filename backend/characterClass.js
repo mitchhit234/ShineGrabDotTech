@@ -1,4 +1,4 @@
-console.log("Enter characterClass.js")
+// console.log("Enter characterClass.js")
 if(ret === undefined){
   console.log("undefined characterClass")
 }

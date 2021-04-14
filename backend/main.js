@@ -1,11 +1,11 @@
 // YO: SLIPPI REPLAY PARSER INDEXES AT 0 BUT SLIPPI.JS INDEXES AT -123
 //Read in Charatcer Tips
 
-if(ret === undefined){
-  console.log("undefined main")
-}
+// if(ret === undefined){
+//   console.log("undefined main")
+// }
 
-console.log("Enter Main")
+// console.log("Enter Main")
 function getTips(char) {
   try {
     var fileName = 'assets/' + char + '_tips.txt';
@@ -100,8 +100,9 @@ const currentGame = new SlippiGame("views/uploads/temp.slp");
 const currentSettings = currentGame.getSettings();
 playerCharacterId = currentSettings.players[ret]['characterId']
 playerCharacterName = getCharacterNames(playerCharacterId)
-var playerIndex = (currentSettings.players[ret]['port'] - 1)
-//console.log(stats)
+var playerIndex = stats.overall[ret]['playerIndex']
+// var playerIndex = (currentSettings.players[ret]['port'] - 1) (old formula for playerIndex)
+
 
 //Create character object
 if(playerCharacterName == "Fox"){
@@ -126,7 +127,6 @@ else if (playerCharacterName == "Captain Falcon"){
 }
 else{
   console.log("That character hasn't been implemented yet")
-  return
 }
 
 

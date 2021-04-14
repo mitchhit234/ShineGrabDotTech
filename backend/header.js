@@ -1,5 +1,5 @@
 var fs = require('fs');
-console.log("Enter header.js")
+// console.log("Enter header.js")
 
 const { settings } = require('cluster');
 const { default: SlippiGame, ConsoleConnection } = require('@slippi/slippi-js');

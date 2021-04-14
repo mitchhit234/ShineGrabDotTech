@@ -1,4 +1,4 @@
-console.log("Enter spacieClass.js")
+// console.log("Enter spacieClass.js")
 if(ret === undefined){
     console.log("undefined spacie class")
   }

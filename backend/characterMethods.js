@@ -1,4 +1,4 @@
-console.log("Enter characterMethods.js")
+// console.log("Enter characterMethods.js")
 if(ret === undefined){
   console.log("undefined characterMethods")
 }

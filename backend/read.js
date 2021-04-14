@@ -49,7 +49,7 @@ let storage = multer.diskStorage({
       ret = ret.slice(-1);
 
       eval(fs.readFileSync('header.js')+'');
-      console.log("After Header.js")
+      // console.log("After Header.js")
       setPort(ret);
 
       
@@ -58,6 +58,10 @@ let storage = multer.diskStorage({
       const stats = game2.getStats();
       var playerIndex = stats.overall[ret]['playerIndex']
       var opponentIndex = stats.overall[ret]['opponentIndex']
+      //console.log(stats.overall[ret])
+      //console.log(opponentIndex + " ; opponentIndex")
+      // console.log(playerIndex + " ; playerIndex")
+      // console.log(sets.players[1]['characterId'] + " characterID")
       enemy_ID = sets.players[opponentIndex]['characterId'];
       enemy_name = getCharacterNames(enemy_ID)
       enemy_file_name = fileReadable(enemy_name)
