@@ -209,7 +209,7 @@ function getWaveDashNum(){
 
 function getInputsPerMinute(){
   player = playerIndex;
-  return stats['overall'][0]['inputsPerMinute']['ratio'].toFixed(0);
+  return stats['overall'][player]['inputsPerMinute']['ratio'].toFixed(0);
 }
 
 function getDamagePerKO(){
